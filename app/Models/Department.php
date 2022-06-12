@@ -13,8 +13,8 @@ class Department extends Model
     protected $primaryKey = 'id';
     protected $guarded = [];
 
-    public function user(){
-        return $this->hasMany(User::class, 'department_id', 'id');
+    public function member(){
+        return $this->hasMany(Member::class, 'department_id', 'id');
     }
 
     public function roomRegistration(){

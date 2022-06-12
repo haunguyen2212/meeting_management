@@ -17,15 +17,15 @@ class AccountSeeder extends Seeder
         DB::table('accounts')->insert([
             [
                 'id' => 1,
-                'username' => 'nguyentrunghau',
+                'username' => 'admincp',
                 'password' => Hash::make('12345'),
-                'role_id' => 4,
+                'role_id' => 1,
                 'created_at' => $dateTime,
                 'updated_at' => $dateTime,
             ],
             [
                 'id' => 2,
-                'username' => 'huynhkhacsu',
+                'username' => 'CB00001',
                 'password' => Hash::make('12345'),
                 'role_id' => 4,
                 'created_at' => $dateTime,
@@ -33,7 +33,7 @@ class AccountSeeder extends Seeder
             ],
             [
                 'id' => 3,
-                'username' => 'tnhuudinh',
+                'username' => 'CB00002',
                 'password' => Hash::make('12345'),
                 'role_id' => 4,
                 'created_at' => $dateTime,
@@ -41,7 +41,7 @@ class AccountSeeder extends Seeder
             ],
             [
                 'id' => 4,
-                'username' => 'lanhdao1',
+                'username' => 'CB00003',
                 'password' => Hash::make('12345'),
                 'role_id' => 2,
                 'created_at' => $dateTime,
@@ -49,7 +49,7 @@ class AccountSeeder extends Seeder
             ],
             [
                 'id' => 5,
-                'username' => 'quanly1',
+                'username' => 'CB00004',
                 'password' => Hash::make('12345'),
                 'role_id' => 3,
                 'created_at' => $dateTime,
@@ -57,7 +57,7 @@ class AccountSeeder extends Seeder
             ],
             [
                 'id' => 6,
-                'username' => 'hotro1',
+                'username' => 'CB00005',
                 'password' => Hash::make('12345'),
                 'role_id' => 4,
                 'created_at' => $dateTime,
@@ -65,7 +65,7 @@ class AccountSeeder extends Seeder
             ],
             [
                 'id' => 7,
-                'username' => 'hotro2',
+                'username' => 'CB00006',
                 'password' => Hash::make('12345'),
                 'role_id' => 4,
                 'created_at' => $dateTime,
@@ -73,7 +73,7 @@ class AccountSeeder extends Seeder
             ],
             [
                 'id' => 8,
-                'username' => 'hotro3',
+                'username' => 'CB00007',
                 'password' => Hash::make('12345'),
                 'role_id' => 4,
                 'created_at' => $dateTime,
@@ -81,7 +81,7 @@ class AccountSeeder extends Seeder
             ],
             [
                 'id' => 9,
-                'username' => 'hotro4',
+                'username' => 'CB00008',
                 'password' => Hash::make('12345'),
                 'role_id' => 4,
                 'created_at' => $dateTime,
@@ -89,7 +89,7 @@ class AccountSeeder extends Seeder
             ],
             [
                 'id' => 10,
-                'username' => 'hotro5',
+                'username' => 'CB00009',
                 'password' => Hash::make('12345'),
                 'role_id' => 4,
                 'created_at' => $dateTime,

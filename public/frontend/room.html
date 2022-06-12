@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./plugins/line-awesome/1.3.0/css/line-awesome.min.css">
+    <link rel="stylesheet" href="./dist/css/style.css">
+</head>
+<body>
+    <input type="checkbox" id="nav-toggle">
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <h2><span class="las la-video"></span> <span>Meeting</span> </h2>
+        </div>
+
+        <div class="sidebar-menu">
+            <ul>
+                <li>
+                    <a href="./index.html"><span class="las la-home"></span><span>Trang chủ</span></a>
+                </li>
+                <li>
+                    <a href=""><span class="las la-phone-volume"></span><span>Đăng ký họp</span></a>
+                </li>
+                <li>
+                    <a href="./user.html"><span class="las la-user-circle"></span><span>Tài khoản</span></a>
+                </li>
+                <li>
+                    <a href="" class="active"><span class="las la-warehouse"></span><span>Phòng họp</span></a>
+                </li>
+                <li>
+                    <a href=""><span class="las la-calendar"></span><span>Cuộc họp</span></a>
+                </li>
+                <li>
+                    <a href="./department.html"><span class="las la-city"></span><span>Đơn vị</span></a>
+                </li>
+                <li>
+                    <a href=""><span class="las la-clipboard-list"></span><span>Danh sách đăng ký</span></a>
+                </li>
+                <li>
+                    <a href=""><span class="las la-edit"></span><span>Phân công cán bộ</span></a>
+                </li>
+                <li>
+                    <a href=""><span class="las la-signal"></span><span>Thống kê</span></a>
+                </li>
+                <li>
+                    <a href=""><span class="las la-cog"></span><span>Cá nhân</span></a>
+                </li>
+                <li>
+                    <a href=""><span class="las la-sign-out-alt"></span><span>Đăng xuất</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <h2>
+                <label for="nav-toggle">
+                    <span class="las la-bars"></span>
+                </label>
+                <span>Dashboard</span> 
+            </h2>
+            <div class="search-wrapper">
+                <span class="las la-search"></span>
+                <input type="search" placeholder="Tìm kiếm ...">
+            </div>
+            <div class="user-wrapper">
+                <img src="./dist/img/avatar/avt-default.jfif" width="40px" height="40px" alt="avatar">
+                <div>
+                    <h4>Nguyễn Trung Hậu</h4>
+                    <small>Quản trị hệ thống</small>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="recent-grid grid-col-50">
+                <div class="room-management">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Danh sách phòng họp</h3>
+                            <button>Thêm mới <span class="las la-plus"></span></button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table width="100%">
+                                    <thead>
+                                        <tr>
+                                            <td width="20%">STT</td>
+                                            <td width="50%">Tên phòng</td>
+                                            <td width="30%">Tùy chỉnh</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Phòng họp 1</td>
+                                            <td>
+                                                <button class="btn btn-success">Sửa</button>
+                                                <button class="btn btn-danger" onclick="confirm('Bạn có chắc muốn xóa không?') ? window.location.href='./index.html': ''">Xóa</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>Phòng họp 2</td>
+                                            <td>
+                                                <button class="btn btn-success">Sửa</button>
+                                                <button class="btn btn-danger" onclick="confirm('Bạn có chắc muốn xóa không?') ? window.location.href='./index.html': ''">Xóa</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td>Phòng họp 3</td>
+                                            <td>
+                                                <button class="btn btn-success">Sửa</button>
+                                                <button class="btn btn-danger" onclick="confirm('Bạn có chắc muốn xóa không?') ? window.location.href='./index.html': ''">Xóa</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>4</td>
+                                            <td>Phòng họp 4</td>
+                                            <td>
+                                                <button class="btn btn-success">Sửa</button>
+                                                <button class="btn btn-danger" onclick="confirm('Bạn có chắc muốn xóa không?') ? window.location.href='./index.html': ''">Xóa</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>5</td>
+                                            <td>Phòng họp 5</td>
+                                            <td>
+                                                <button class="btn btn-success">Sửa</button>
+                                                <button class="btn btn-danger" onclick="confirm('Bạn có chắc muốn xóa không?') ? window.location.href='./index.html': ''">Xóa</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </main>
+    </div>
+</body>
+</html>

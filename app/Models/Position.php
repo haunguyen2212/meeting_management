@@ -13,7 +13,7 @@ class Position extends Model
     protected $primaryKey = 'id';
     protected $guarded = [];
 
-    public function user(){
-        return $this->hasMany(User::class, 'position_id', 'id');
+    public function member(){
+        return $this->hasMany(Member::class, 'position_id', 'id');
     }
 }

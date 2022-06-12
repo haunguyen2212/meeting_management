@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->date('date_of_birth');
             $table->char('sex', 1);
             $table->string('address', 200);
+            $table->string('avatar', 200)->default('avt-default.jfif');
             $table->string('phone', 20);
             $table->string('email', 100);
             $table->timestamps();

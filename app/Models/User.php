@@ -12,12 +12,13 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $table = 'users';
+    protected $table = 'accounts';
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'name',
-        'email',
+        'username',
+        'password',
+        'role_id',
     ];
 
     protected $hidden = [
@@ -29,24 +30,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function department(){
-        return $this->belongsTo(Department::class, 'department_id', 'id');
+    public function role(){
+        return $this->belongsTo(Role::class, 'role_id', 'id');
     }
 
-    public function position(){
-        return $this->belongsTo(Position::class, 'position_id', 'id');
-    }
-
-    public function account(){
-        return $this->belongsTo(Account::class, 'account_id', 'id');
-    }
-
-    public function supporter(){
-        return $this->hasMany(Supporter::class, 'user_id', 'id');
-    }
-
-    public function roomRegistration(){
-        return $this->hasMany(RoomRegistration::class, 'register_id', 'id');
+    public function member(){
+        return $this->hasOne(Member::class, 'account_id', 'id');
     }
 
 }

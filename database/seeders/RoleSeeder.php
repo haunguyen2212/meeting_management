@@ -16,7 +16,7 @@ class RoleSeeder extends Seeder
         DB::table('roles')->insert([
             [
                 'id' => 1,
-                'name' => 'admin',
+                'name' => 'Quản trị hệ thống',
                 'created_at' => $dateTime,
                 'updated_at' => $dateTime,
             ],
@@ -28,7 +28,7 @@ class RoleSeeder extends Seeder
             ],
             [
                 'id' => 3,
-                'name' => 'Quản lý',
+                'name' => 'Bộ phận quản lý',
                 'created_at' => $dateTime,
                 'updated_at' => $dateTime,
             ],
