@@ -433,6 +433,12 @@ td{
     border-color: #0d6efd;
 }
 
+.btn-main{
+    color: #fff;
+    background-color: var(--main-color);
+    border-color: var(--main-color);
+}
+
 /* end button */
 
 /* modal */
@@ -527,12 +533,12 @@ td{
     margin: 20px 0 12px 0;
 }
 
-.input-box-100, .select-box-100, .radio-box-100{
+.input-box-100, .select-box-100, .radio-box-100, .file-box-100{
     width: 100%;
     margin-bottom: 10px;
 }
 
-.input-box-50, .select-box-50, .radio-box-50{
+.input-box-50, .select-box-50, .radio-box-50, .file-box-50{
     width: calc(100% / 2 - 20px);
     margin-bottom: 10px;
 }

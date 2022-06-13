@@ -21,7 +21,7 @@ function showDataUser(obj){
     $('#accountShow .left h4').html(obj.name);
     $('#accountShow .left p').html(obj.department_name);
     $('#accountShow .left p:last-child').html(obj.position_name);
-    $('#accountShow #txt-dob').html(obj.date_of_birth);
+    $('#accountShow #txt-dob').html(formatDate(obj.date_of_birth));
     $('#accountShow #txt-sex').html((obj.sex == 0 )? 'Nam' : 'Nữ');
     $('#accountShow #txt-email').html(obj.email);
     $('#accountShow #txt-phone').html(obj.phone);
@@ -162,7 +162,7 @@ function showFormEdit(obj){
 
     $('#name_edit').val(obj.user.name);
     $('#gender_'+obj.user.sex).prop("checked", true);
-    $('#date_edit').val(obj.user.date_of_birth);
+    $('#date_edit').val(formatDate(obj.user.date_of_birth));
     $('#phone_edit').val(obj.user.phone);
     $('#address_edit').val(obj.user.address);
     $('#email_edit').val(obj.user.email);

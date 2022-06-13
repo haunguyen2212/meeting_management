@@ -59,9 +59,13 @@
                 <li>
                     <a href=""><span class="las la-signal"></span><span>Thống kê</span></a>
                 </li>
-                <li>
-                    <a href=""><span class="las la-cog"></span><span>Cá nhân</span></a>
-                </li>
+
+                @if (Auth::user()->role_id == 1)
+                    <li>
+                        <a href=""><span class="las la-cog"></span><span>Cá nhân</span></a>
+                    </li>
+                @endif
+
                 <li>
                     <a href="{{ route('logout') }}"><span class="las la-sign-out-alt"></span><span>Đăng xuất</span></a>
                 </li>

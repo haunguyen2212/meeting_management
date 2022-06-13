@@ -8,6 +8,7 @@ use App\Models\Position;
 use App\Models\Role;
 use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -39,12 +40,12 @@ class AccountController extends Controller
         $rules = [
             'name_add' => 'required',
             'gender_add' => 'required',
-            'date_add' => 'required',
+            'date_add' => 'required|date_format:d-m-Y',
             'phone_add' => 'required',
             'address_add' => 'required',
             'department_add' => 'required',
             'position_add' => 'required',
-            'email_add' => 'required|unique:users,email',
+            'email_add' => 'required|email|unique:users,email',
             'role_add' => 'required',
             'username_add' => 'required|unique:accounts,username',
             'password_add' => 'required|min:5|max:20',
@@ -54,11 +55,13 @@ class AccountController extends Controller
             'name_add.required' => 'Chưa nhập họ tên',
             'gender_add.required' => 'Chưa chọn giới tính',
             'date_add.required' => 'Chưa nhập ngày sinh',
+            'date_add.date_format' => 'Ngày chưa đúng định dạng',
             'phone_add.required' => 'Chưa nhập số điện thoại',
             'address_add.required' => 'Chưa nhập địa chỉ',
             'department_add.required' => 'Chưa chọn đơn vị',
             'position_add.required' => 'Chưa chọn chức vụ',
             'email_add.required' => 'Chưa nhập email',
+            'email_add.email' => 'Email không đúng',
             'email_add.unique' => 'Email đã tồn tại',
             'role_add.required' => 'Chưa chọn loại tài khoản',
             'username_add.required' => 'Chưa nhập tên tài khoản',
@@ -74,6 +77,8 @@ class AccountController extends Controller
             return response()->json(['error' => $validator->errors()->toArray(), 'status' => 0]);
         }
 
+        $date_add = date("Y-m-d", strtotime($request->date_add));
+
         $account = User::create([
             'username' => $request->username_add,
             'password' => Hash::make($request->password_add),
@@ -85,7 +90,7 @@ class AccountController extends Controller
             'department_id' => $request->department_add,
             'position_id' => $request->position_add,
             'account_id' => $account->id,
-            'date_of_birth' => $request->date_add,
+            'date_of_birth' => $date_add,
             'sex' => $request->gender_add,
             'address' => $request->address_add,
             'phone' => $request->phone_add,
@@ -175,12 +180,14 @@ class AccountController extends Controller
             return response()->json(['error' => $validator->errors()->toArray(), 'status' => 0]);
         }
 
+        $date_edit = date("Y-m-d", strtotime($request->date_edit));
+
         $update1 = $user->update([
             'name' => $request->name_edit,
             'sex' => $request->gender_edit,
             'department_id' => $request->department_edit,
             'position_id' => $request->position_edit,
-            'date_of_birth' => $request->date_edit,
+            'date_of_birth' => $date_edit,
             'address' => $request->address_edit,
             'phone' => $request->phone_edit,
             'email' => $request->email_edit,

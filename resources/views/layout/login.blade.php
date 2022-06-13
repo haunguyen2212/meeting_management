@@ -40,7 +40,7 @@
                 <span></span>
                 <label>Mật khẩu</label>
             </div>
-            <div class="pass">Quên mật khẩu?</div>
+            <div class="pass" style="min-height: 15px"></div>
             <input type="submit" value="Đăng nhập">
             <div class="signup-link">
                 Chưa có tài khoản? <a href="">Đăng ký</a>

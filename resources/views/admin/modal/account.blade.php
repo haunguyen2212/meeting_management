@@ -96,7 +96,7 @@
 						</div>
 						<div class="input-box-50">
 							<span class="input-label">Ngày sinh:</span>
-							<input type="text" name="date_add" placeholder="YY-mm-dd">
+							<input type="text" name="date_add" placeholder="dd-mm-YY">
 							<span class="error-text error_date_add text-danger"></span>
 						</div>
 						<div class="input-box-50">
@@ -188,7 +188,7 @@
 						</div>
 						<div class="input-box-50">
 							<span class="input-label">Ngày sinh:</span>
-							<input type="text" name="date_edit" id="date_edit" placeholder="YY-mm-dd">
+							<input type="text" name="date_edit" id="date_edit" placeholder="dd-mm-YY">
 							<span class="error-text error_date_edit text-danger"></span>
 						</div>
 						<div class="input-box-50">
