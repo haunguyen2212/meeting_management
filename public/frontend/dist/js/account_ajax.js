@@ -61,14 +61,14 @@ $('form#account-add').submit(function(e){
             $('.error-text').html('');
         },
         success: function(response){
-           if(response.status == 1){
+            if(typeof response.error != 'undefined'){
+                $.each(response.error, function(prefix, val){
+                    $('span.error_'+prefix).html(val[0]);
+                });
+            }
+            else{
                 window.location.reload();
-           }
-           else{
-            $.each(response.error, function(prefix, val){
-                $('span.error_'+prefix).html(val[0]);
-              });
-           }
+            }
         }
     });
 });
@@ -127,13 +127,13 @@ $('form#account-edit').submit(function(e){
             $('.error-text').html('');
         },
         success: function(response){
-            if(response.status == 1){
-                window.location.reload();
-            }
-            else{
+            if(typeof response.error != 'undefined'){
                 $.each(response.error, function(prefix, val){
                     $('span.error_'+prefix).html(val[0]);
                 });
+            }
+            else{
+                window.location.reload();
             }
         }
     });
@@ -181,11 +181,45 @@ $('.btn-delete').click(function(e){
             type: 'delete',
             url: url,
             data: {_token:_token},
-            success: function(response){
-                if(response.status == 1){
-                    window.location.reload();
-                }
+            success: function(response){ 
+                window.location.reload();
             }
         });
     }
+});
+
+//Change password
+$('.btn-change-pass').click(function(e){
+    e.preventDefault();
+    var url = $(this).attr('data-url');
+    $('#change-pass').attr('data-url', url);
+})
+
+$('#change-pass').submit(function(e){
+    e.preventDefault();
+    var url = $(this).attr('data-url');
+    var formPass = new FormData($(this)[0]);
+    formPass.append('_token', _token);
+    $.ajax({
+        type: 'post',
+        url: url,
+        data: formPass,
+        dataType: 'JSON',
+        processData: false,
+        cache: false,
+        contentType: false,
+        beforeSend: function(){
+            $('.error-text').html('');
+        },
+        success: function(response){
+            if(typeof response.error != 'undefined'){
+                $.each(response.error, function(prefix, val){
+                    $('span.error_'+prefix).html(val[0]);
+                });
+            }
+            else{
+                window.location.reload();
+            }
+        }
+    });
 });

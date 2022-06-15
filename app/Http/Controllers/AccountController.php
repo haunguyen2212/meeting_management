@@ -30,9 +30,9 @@ class AccountController extends Controller
     {
         $data = [];
         $data['positions'] = Position::select('id', 'name')->get();
-        $data['roles'] = Role::select('id', 'name')->get();
+        $data['roles'] = Role::select('id', 'name')->orderBy('id', 'desc')->get();
         $data['departments'] = Department::select('id', 'name')->get();
-        return response()->json(['data' => $data, 'status' => 1], 200);
+        return response()->json(['data' => $data, 'status' => 1]);
     }
 
     public function store(Request $request)
@@ -99,7 +99,7 @@ class AccountController extends Controller
 
         if($account && $user){
             Toastr::success('Thêm thành viên thành công', 'Thành công');
-            return response()->json(['status' => 1], 200);
+            return response()->json(['status' => 1]);
         }
         else{
             Toastr::error('Có lỗi xảy ra, thử lại sau', 'Thất bại');
@@ -117,7 +117,7 @@ class AccountController extends Controller
                 ->where('members.id', $id)
                 ->select('members.id', 'members.name', 'date_of_birth', 'sex', 'address', 'avatar', 'phone', 'email', 'username', DB::raw("roles.name as role_name, departments.name as department_name, positions.name as position_name"))
                 ->first();
-        return response()->json(['data' => $data, 'status' => 1], 200);
+        return response()->json(['data' => $data, 'status' => 1]);
     }
 
     public function edit($id)
@@ -130,7 +130,7 @@ class AccountController extends Controller
         $data['positions'] = Position::select('id', 'name')->get();
         $data['roles'] = Role::select('id', 'name')->get();
         $data['departments'] = Department::select('id', 'name')->get();
-        return response()->json(['data' => $data, 'status' => 1], 200);
+        return response()->json(['data' => $data, 'status' => 1]);
     }
 
     public function update(Request $request, $id)
@@ -201,7 +201,7 @@ class AccountController extends Controller
 
         if($update1 && $update2){
             Toastr::success('Cập nhật thông tin thành công', 'Thành công');
-            return response()->json(['status' => 1], 200);
+            return response()->json(['status' => 1]);
         }
         else{
             Toastr::error('Có lỗi xảy ra, thử lại sau', 'Thất bại');
@@ -229,12 +229,42 @@ class AccountController extends Controller
         $account = User::find($account_id)->delete();
         if($delete && $account){
             Toastr::success('Xóa người dùng thành công', 'Thành công');
-            return response()->json(['status' => 1], 200);
+            return response()->json(['status' => 1]);
         }
         else{
             Toastr::error('Có lỗi xảy ra, thử lại sau', 'Thất bại');
             return response()->json(['status' => 0]);
         }
         
+    }
+
+    public function changePassword($id, Request $request){
+        $rules = [
+            'password' => 'required|min:8',
+        ];
+
+        $messages = [
+            'password.required' => 'Mật khẩu không được bỏ trống',
+            'password.min' => 'Mật khẩu ít nhất 8 kí tự',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if($validator->fails()){
+            return response()->json(['error' => $validator->errors()->toArray(), 'status' => 0]);
+        }
+
+        $account = User::find($id);
+        $password = $request->password;
+        $update = $account->update([
+            'password' => Hash::make($password),
+        ]);
+        if($update){
+            Toastr::success('Thay đổi mật khẩu thành công', 'Thành công');
+            return response()->json(['status' => 1]);
+        }
+        else{
+            Toastr::error('Có lỗi xảy ra, thử lại sau', 'Thất bại');
+            return response()->json(['status' => 0]);
+        }
     }
 }

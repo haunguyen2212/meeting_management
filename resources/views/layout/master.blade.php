@@ -33,11 +33,11 @@
                         <a id="account" href="{{ route('account.index') }}"><span class="las la-user-circle"></span><span>Tài khoản</span></a>
                     </li>
                     <li>
-                        <a href="./room.html"><span class="las la-warehouse"></span><span>Phòng họp</span></a>
+                        <a id="room" href="{{ route('room.index') }}"><span class="las la-warehouse"></span><span>Phòng họp</span></a>
                     </li>
                     
                     <li>
-                        <a href="./department.html"><span class="las la-city"></span><span>Đơn vị</span></a>
+                        <a id="department" href="{{ route('department.index') }}"><span class="las la-city"></span><span>Đơn vị</span></a>
                     </li>
                 @endif
                 
@@ -59,13 +59,6 @@
                 <li>
                     <a href=""><span class="las la-signal"></span><span>Thống kê</span></a>
                 </li>
-
-                @if (Auth::user()->role_id == 1)
-                    <li>
-                        <a href=""><span class="las la-cog"></span><span>Cá nhân</span></a>
-                    </li>
-                @endif
-
                 <li>
                     <a href="{{ route('logout') }}"><span class="las la-sign-out-alt"></span><span>Đăng xuất</span></a>
                 </li>

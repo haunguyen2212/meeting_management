@@ -16,6 +16,14 @@ use Illuminate\Validation\Rule;
 class HomeController extends Controller
 {
 
+    public function checkGateEdit($user){
+        if(!Gate::allows('edit-info', $user)){
+            Toastr::error('Bạn không có quyền thực hiện thao tác này', 'Lỗi');
+            return false;
+        }
+        return true;
+    }
+
     public function index(){
         // if(Auth::user()->role_id == 1){
         //     $users = Member::join('users', 'account_id', 'users.id')
@@ -66,7 +74,7 @@ class HomeController extends Controller
     
             if ($change) {
                 Toastr::success('Đổi mật khẩu thành công', 'Thành công');
-                return response()->json(['status' => 1], 200);
+                return response()->json(['status' => 1]);
             } else {
                 Toastr::error('Có lỗi xảy ra, thử lại sau', 'Thất bại');
                 return response()->json(['status' => 0]);
@@ -75,14 +83,6 @@ class HomeController extends Controller
             $error['old_pass'] = ['Mật khẩu không trùng khớp'];
             return response()->json(['error' => $error,'status' => 0 ]);
         }
-    }
-
-    public function checkGateEdit($user){
-        if(!Gate::allows('edit-info', $user)){
-            Toastr::error('Bạn không có quyền thực hiện thao tác này', 'Lỗi');
-            return false;
-        }
-        return true;
     }
 
     public function editProfile($id){
@@ -94,7 +94,7 @@ class HomeController extends Controller
 
         $data = Member::select('id', 'name', 'date_of_birth', 'sex', 'address', 'phone', 'email')->find($id);
         if(!empty($data)){
-            return response()->json(['data' => $data, 'status' => 1], 200);
+            return response()->json(['data' => $data, 'status' => 1]);
         }
         else{
             Toastr::error('Có lỗi xảy ra, thử lại sau', 'Lỗi');
@@ -151,8 +151,9 @@ class HomeController extends Controller
 
 
         if($update){
+            LoginController::getSessionUser();
             Toastr::success('Cập nhật thông tin thành công', 'Thành công');
-            return response()->json(['status' => 1], 200);
+            return response()->json(['status' => 1]);
         }
         else{
             Toastr::error('Có lỗi xảy ra, thử lại sau', 'Thất bại');
@@ -178,6 +179,22 @@ class HomeController extends Controller
     }
 
     public function updateAvatar($id, Request $request){
+
+        $rules = [
+            'img' => 'required|image',
+        ];
+
+        $messages = [
+            'img.required' => 'Chưa chọn hình ảnh',
+            'img.image' => 'Avatar phải là file hình ảnh',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if($validator->fails()){
+            return response()->json(['error' => $validator->errors()->toArray(), 'status' => 0]);
+        }
+
         $image = $request->file('img');
 
         if($image){
@@ -204,7 +221,8 @@ class HomeController extends Controller
             }
         }
 
+        LoginController::getSessionUser();
         Toastr::success('Cập nhật thành công', 'Thành công');
-        return response()->json(['status' => 1], 200);
+        return response()->json(['status' => 1]);
     }
 }

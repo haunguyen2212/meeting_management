@@ -11,6 +11,20 @@ use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
+    public static function getSessionUser(){
+        if(Session::has('user')){
+            Session::forget('user');
+        }
+        $username = Auth::user()->username;
+        $user = Member::join('users', 'account_id', 'users.id')
+            ->join('roles', 'role_id', 'roles.id')
+            ->where('username', $username)
+            ->select('username', 'members.name', 'avatar', 'role_id', DB::raw("roles.name as roleName"))
+            ->first();
+        Session::put('user', $user);
+        return true;
+    }
+
     public function index(){
         return view('layout.login');
     }
@@ -33,12 +47,7 @@ class LoginController extends Controller
         $request->validate($rules, $messages);
 
         if(Auth::attempt(['username' => $username, 'password' => $password])){
-            $user = Member::join('users', 'account_id', 'users.id')
-            ->join('roles', 'role_id', 'roles.id')
-            ->where('username', $username)
-            ->select('username', 'members.name', 'avatar', 'role_id', DB::raw("roles.name as roleName"))
-            ->first();
-            Session::put('user', $user);
+            $this->getSessionUser();
             return redirect()->route('home');
         }
         else{

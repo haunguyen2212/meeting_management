@@ -145,7 +145,14 @@ $('#change-img').submit(function(e){
             $('.error-text').html('');
         },
         success: function(response){
-            window.location.reload();
+            if(typeof response.error != 'undefined'){
+                $.each(response.error, function(prefix, val){
+                    $('span.error_'+prefix).html(val[0]);
+                });
+            }
+            else{
+                window.location.reload();
+            }
         }
     })
 });

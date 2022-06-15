@@ -39,13 +39,22 @@
                                     <td>{{ $account->phone }}</td>
                                     <td>{{ $account->email }}</td>
                                     <td>
-                                        <button class="btn btn-info btn-show" data-url="{{ route('account.show', ['account' => $account->id]) }}" onclick="showModal(event, '#accountShow')">Xem</button>
+                                        <button class="btn btn-info btn-show" 
+                                                data-url="{{ route('account.show', ['account' => $account->id]) }}" 
+                                                onclick="showModal(event, '#accountShow')"
+                                        ><i class="las la-eye" style="font-size: .9rem"></i></button>
                                         <button class="btn btn-warning btn-edit" 
                                                 data-url="{{ route('account.edit', ['account' => $account->id ]) }}" 
                                                 data-update="{{ route('account.update', ['account' => $account->id]) }}" 
                                                 onclick="showModal(event, '#accountEdit')"
-                                        >Sửa</button>
-                                        <button class="btn btn-danger btn-delete" data-url="{{ route('account.destroy', ['account' => $account->id]) }}">Xóa</button>
+                                        ><i class="las la-edit" style="font-size: .9rem"></i></button>
+                                        <button class="btn btn-danger btn-delete" 
+                                                data-url="{{ route('account.destroy', ['account' => $account->id]) }}"
+                                        ><i class="las la-times" style="font-size: .9rem"></i></button>
+                                        <button class="btn btn-success btn-change-pass"
+                                                data-url="{{ route('account.password', ['id' => $account->account_id]) }}"
+                                                onclick="showModal(event,'#passwordChange')"
+                                        ><i class="las la-key" style="font-size: .9rem"></i></button>
                                     </td>
                                 </tr>
                                 @endforeach

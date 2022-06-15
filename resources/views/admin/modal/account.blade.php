@@ -248,3 +248,31 @@
 	</div>
 </div>
 
+{{-- Model change password --}}
+<div class="modal-container" id="passwordChange">
+	<div class="modal">
+		<form id="change-pass" data-url="">
+			<div class="modal-header">
+				<h3 class="text-success">Đổi mật khẩu</h3>
+				<button onclick="closeModal(event,'#passwordChange')"><span class="las la-times"></span></button>
+			</div>
+			<div class="modal-body">
+				<div class="form-container">
+					<div class="form-control">
+						@method('PATCH')
+						<div class="input-box-100">
+							<span class="input-label">Mật khẩu mới:</span>
+							<input type="password" name="password" placeholder="Nhập mật khẩu mới">
+							<span class="error-text error_password text-danger"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-success">Cập nhật</button>
+				<button class="btn btn-danger" onclick="closeModal(event,'#passwordChange')">Đóng</button>
+			</div>
+		</form>
+	</div>
+</div>
+
