@@ -34,13 +34,13 @@ $('#change-pass').submit(function(e){
             $('.error-text').html('');
         },
         success: function(response){
-            if(response.status == 1){
-                window.location.reload();
-            }
-            else{
+            if(typeof response.error != "undefined"){
                 $.each(response.error, function(prefix, val){
                     $('span.error_'+prefix).html(val[0]);
                 });
+            }
+            else{
+                window.location.reload();
             }
         }
     })
@@ -57,8 +57,13 @@ $('.btn-edit').click(function(e){
         url: url,
         data:{_token,_token},
         success: function(response){
-            showFormEdit(response.data);
-            $('#info-edit').attr('data-url', update);
+            if(response.status == 1){
+                showFormEdit(response.data);
+                $('#info-edit').attr('data-url', update);
+            }
+            else{
+                window.location.reload();
+            }   
         }
     });
 });
@@ -80,13 +85,13 @@ $('#info-edit').submit(function(e){
             $('.error-text').html('');
         },
         success: function(response){
-            if(response.status == 1){
-                window.location.reload();
-            }
-            else{
+            if(typeof response.error != "undefined"){
                 $.each(response.error, function(prefix, val){
                     $('span.error_'+prefix).html(val[0]);
                 });
+            }
+            else{   
+                window.location.reload();
             }
         }
     });
@@ -101,3 +106,46 @@ function showFormEdit(obj){
     $('#email_edit').val(obj.email);
 }
 
+
+//Change image
+$('.btn-img').click(function(e){
+    e.preventDefault();
+    var url = $(this).attr('data-url');
+    var update = $(this).attr('data-update');
+    $.ajax({
+        type: 'get',
+        url: url,
+        data:{_token:_token},
+        success: function(response){
+            if(response.status == 1){
+                $('#edit-upload').attr('src','dist/img/avatar/'+response.data);
+                $('#change-img').attr('data-url', update);
+            }
+            else{
+                window.location.reload();
+            }
+        }
+    })
+});
+
+$('#change-img').submit(function(e){
+    e.preventDefault();
+    var url = $(this).attr('data-url');
+    var formImg = new FormData($(this)[0]);
+    formImg.append('_token', _token);
+    $.ajax({
+        type: 'post',
+        url: url,
+        data: formImg,
+        dataType: 'JSON',
+        processData: false,
+        cache: false,
+        contentType: false,
+        beforeSend: function(){
+            $('.error-text').html('');
+        },
+        success: function(response){
+            window.location.reload();
+        }
+    })
+});

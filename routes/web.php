@@ -12,9 +12,11 @@ Route::get('login', [LoginController::class, 'index'])->name('login');
 Route::post('login', [LoginController::class, 'check'])->name('login.check');
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::post('change_password', [HomeController::class, 'changePassword'])->name('password.change');
+Route::patch('change_password', [HomeController::class, 'changePassword'])->name('password.change');
 Route::get('profile_edit/{id}', [HomeController::class, 'editProfile'])->name('profile.edit');
 Route::patch('profile_edit/{id}', [HomeController::class, 'updateProfile'])->name('profile.update');
+Route::get('avatar_edit/{id}', [HomeController::class, 'editAvatar'])->name('avatar.edit');
+Route::patch('avatar_edit/{id}', [HomeController::class, 'updateAvatar'])->name('avatar.update');
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
     Route::resource('account', AccountController::class);

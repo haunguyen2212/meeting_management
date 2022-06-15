@@ -65,5 +65,5 @@
     <script>
         $('#account').addClass('active');
     </script>
-    <script src="./dist/js/account.js"></script>
+    <script src="./dist/js/account_ajax.js"></script>
 @endsection

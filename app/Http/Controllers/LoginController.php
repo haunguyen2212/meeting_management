@@ -33,10 +33,10 @@ class LoginController extends Controller
         $request->validate($rules, $messages);
 
         if(Auth::attempt(['username' => $username, 'password' => $password])){
-            $user = Member::join('accounts', 'account_id', 'accounts.id')
+            $user = Member::join('users', 'account_id', 'users.id')
             ->join('roles', 'role_id', 'roles.id')
             ->where('username', $username)
-            ->select('username', 'users.name', 'avatar', 'role_id', DB::raw("roles.name as roleName"))
+            ->select('username', 'members.name', 'avatar', 'role_id', DB::raw("roles.name as roleName"))
             ->first();
             Session::put('user', $user);
             return redirect()->route('home');
@@ -46,9 +46,10 @@ class LoginController extends Controller
         }
     }
 
-    public function logout(){
+    public function logout(Request $request){
         Auth::logout();
-        Session::remove('user');
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return redirect()->route('login');
     }
 }

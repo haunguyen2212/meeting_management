@@ -3,7 +3,7 @@
 @section('title', 'Trang chủ')
 
 @section('content')
-    @if (Auth::user()->role_id == 1)
+    {{-- @if (Auth::user()->role_id == 1)
         <div class="cards">
             <div class="card-single">
                 <div>
@@ -161,7 +161,7 @@
             </div>
         </div>
 
-    @else
+    @else --}}
         <div class="recent-grid grid-col-65">
             <div class="list-info">
                 <div class="card">
@@ -175,7 +175,11 @@
                                     <tr>
                                         <td rowspan="5" align="center">
                                             <img src="./dist/img/avatar/{{ $user->avatar }}" alt="" width="100px">
-                                            <button class="btn btn-white">
+                                            <button class="btn btn-white btn-img" 
+                                                    data-url="{{ route('avatar.edit', ['id' => $user->id]) }}"
+                                                    data-update="{{ route('avatar.update', ['id' => $user->id]) }}"
+                                                    onclick="showModal(event, '#changeImg')"
+                                            >
                                                 <span class="las la-camera"></span> Đổi ảnh
                                             </button>
                                         </td>
@@ -233,13 +237,13 @@
         </div>
 
         @include('shared.modal.info')
-    @endif
+    {{-- @endif --}}
 
 
 @endsection
 
 @section('script')
-    <script src="./dist/js/home.js"></script>
+    <script src="./dist/js/home_ajax.js"></script>
     <script>
         $('#home').addClass('active');
     </script>

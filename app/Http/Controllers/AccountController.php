@@ -20,8 +20,8 @@ class AccountController extends Controller
     
     public function index()
     {
-        $accounts = Member::join('accounts', 'account_id', 'accounts.id')
-                ->select('users.id', 'username', 'users.name', 'account_id', 'date_of_birth', 'address', 'phone', 'email')
+        $accounts = Member::join('users', 'account_id', 'users.id')
+                ->select('members.id', 'username', 'members.name', 'account_id', 'date_of_birth', 'address', 'phone', 'email')
                 ->paginate(8);
         return view('admin.account', compact('accounts', $accounts));
     }
@@ -45,9 +45,9 @@ class AccountController extends Controller
             'address_add' => 'required',
             'department_add' => 'required',
             'position_add' => 'required',
-            'email_add' => 'required|email|unique:users,email',
+            'email_add' => 'required|email|unique:members,email',
             'role_add' => 'required',
-            'username_add' => 'required|unique:accounts,username',
+            'username_add' => 'required|unique:users,username',
             'password_add' => 'required|min:5|max:20',
         ];
 
@@ -110,12 +110,12 @@ class AccountController extends Controller
 
     public function show($id)
     {
-        $data = Member::join('accounts', 'account_id', 'accounts.id')
+        $data = Member::join('users', 'account_id', 'users.id')
                 ->join('roles', 'role_id', 'roles.id')
                 ->join('positions', 'position_id', 'positions.id')
                 ->join('departments', 'department_id', 'departments.id')
-                ->where('users.id', $id)
-                ->select('users.id', 'users.name', 'date_of_birth', 'sex', 'address', 'avatar', 'phone', 'email', 'username', DB::raw("roles.name as role_name, departments.name as department_name, positions.name as position_name"))
+                ->where('members.id', $id)
+                ->select('members.id', 'members.name', 'date_of_birth', 'sex', 'address', 'avatar', 'phone', 'email', 'username', DB::raw("roles.name as role_name, departments.name as department_name, positions.name as position_name"))
                 ->first();
         return response()->json(['data' => $data, 'status' => 1], 200);
     }
@@ -123,9 +123,9 @@ class AccountController extends Controller
     public function edit($id)
     {
         $data = [];
-        $data['user'] = Member::join('accounts', 'account_id', 'accounts.id')
-                        ->where('users.id', $id)
-                        ->select('users.id', 'name', 'department_id', 'position_id', 'username', 'role_id', 'date_of_birth', 'sex', 'address', 'avatar', 'phone', 'email')
+        $data['user'] = Member::join('users', 'account_id', 'users.id')
+                        ->where('members.id', $id)
+                        ->select('members.id', 'name', 'department_id', 'position_id', 'username', 'role_id', 'date_of_birth', 'sex', 'address', 'avatar', 'phone', 'email')
                         ->first();
         $data['positions'] = Position::select('id', 'name')->get();
         $data['roles'] = Role::select('id', 'name')->get();
@@ -143,19 +143,19 @@ class AccountController extends Controller
         $rules = [
             'name_edit' => 'required',
             'gender_edit' => 'required',
-            'date_edit' => 'required',
+            'date_edit' => 'required|date_format:d-m-Y',
             'phone_edit' => 'required',
             'address_edit' => 'required',
             'department_edit' => 'required',
             'position_edit' => 'required',
             'email_edit' => [
                 'required',
-                Rule::unique('users', 'email')->ignore($id, 'id'),
+                Rule::unique('members', 'email')->ignore($id, 'id'),
             ],
             'role_edit' => 'required',
             'username_edit' => [
                 'required',
-                Rule::unique('accounts', 'username')->ignore($account_id, 'id'),
+                Rule::unique('users', 'username')->ignore($account_id, 'id'),
             ],
         ];
 
@@ -163,6 +163,7 @@ class AccountController extends Controller
             'name_edit.required' => 'Chưa nhập họ tên',
             'gender_edit.required' => 'Chưa chọn giới tính',
             'date_edit.required' => 'Chưa nhập ngày sinh',
+            'date_edit.date_format' => 'Ngày chưa đúng định dạng',
             'phone_edit.required' => 'Chưa nhập số điện thoại',
             'address_edit.required' => 'Chưa nhập địa chỉ',
             'department_edit.required' => 'Chưa chọn đơn vị',

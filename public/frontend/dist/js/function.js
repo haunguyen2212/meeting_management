@@ -14,3 +14,16 @@ function formatDate(date){
     var format = parts[2]+'-'+parts[1]+'-'+parts[0]; 
     return format;
 }
+
+function chooseFile(e, fileInput, id){
+    e.preventDefault();
+    if(fileInput.files && fileInput.files[0]){
+        var reader = new FileReader();
+
+        reader.onload = function(e){
+            $('#'+id).attr('src', e.target.result);
+            $('#'+id).show();
+        }
+        reader.readAsDataURL(fileInput.files[0]);
+    }
+}

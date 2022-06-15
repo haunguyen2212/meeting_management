@@ -9,6 +9,7 @@
 			<div class="modal-body">
 				<div class="form-container">
 					<div class="form-control">
+						@method('PATCH')
 						<div class="input-box-100">
 							<span class="input-label">Mật khẩu cũ:</span>
 							<input type="password" name="old_pass" id="old_pass" placeholder="Nhập mật khẩu hiện tại">
@@ -91,6 +92,35 @@
 			<div class="modal-footer">
 				<button type="submit" class="btn btn-success">Cập nhật</button>
 				<button class="btn btn-danger" onclick="closeModal(event,'#editInfo')">Đóng</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+{{-- Modal change image --}}
+<div class="modal-container" id="changeImg">
+	<div class="modal">
+		<form id="change-img">
+			<div class="modal-header">
+				<h3 class="text-success">Đổi ảnh đại diện</h3>
+				<button onclick="closeModal(event,'#changeImg')"><span class="las la-times"></span></button>
+			</div>
+			<div class="modal-body">
+				<div class="form-container">
+					<div class="form-control">
+						@method('PATCH')
+						<div class="file-box-100">
+							<span class="input-label">Hình ảnh:</span>
+							<input type="file" name="img" id="img" onchange="chooseFile(event, this,'edit-upload')"><br>
+							<img id="edit-upload" alt="img" width="150px"><br>
+							<span class="error-text error_img text-danger"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-success">Cập nhật</button>
+				<button class="btn btn-danger" onclick="closeModal(event,'#changeImg')">Đóng</button>
 			</div>
 		</form>
 	</div>
