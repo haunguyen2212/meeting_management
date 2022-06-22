@@ -8,3 +8,8 @@
 
 /.github export-ignore
 CHANGELOG.md export-ignore
+
+*.php linguist-detectable=true
+*.js linguist-detectable=false
+*.html linguist-detectable=false
+*.xml linguist-detectable=false
