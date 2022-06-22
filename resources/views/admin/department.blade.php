@@ -12,7 +12,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table width="100%">
+                        <table style="min-width: 600px">
                             <thead>
                                 <tr>
                                     <td width="10%">ID</td>

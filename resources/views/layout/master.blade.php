@@ -25,7 +25,7 @@
                     <a id="home" href="{{ route('home') }}"><span class="las la-home"></span><span>Trang chủ</span></a>
                 </li>
                 <li>
-                    <a id="registration" href=""><span class="las la-phone-volume"></span><span>Đăng ký họp</span></a>
+                    <a id="register" href="{{ route('register.index') }}"><span class="las la-phone-volume"></span><span>Đăng ký họp</span></a>
                 </li>
 
                 @if (Auth::user()->role_id == 1)
@@ -39,11 +39,17 @@
                     <li>
                         <a id="department" href="{{ route('department.index') }}"><span class="las la-city"></span><span>Đơn vị</span></a>
                     </li>
+                    <li>
+                        <a id="meeting-list" href="{{ route('meeting.index') }}"><span class="las la-calendar-check"></span><span>Cuộc họp</span></a>
+                    </li>
+                    <li>
+                        <a href=""><span class="las la-signal"></span><span>Thống kê</span></a>
+                    </li>
                 @endif
                 
                 @if (Auth::user()->role_id == 2)
                     <li>
-                        <a href=""><span class="las la-clipboard-list"></span><span>Danh sách đăng ký</span></a>
+                        <a id="approval" href="{{ route('approval.index') }}"><span class="las la-clipboard-list"></span><span>Phê duyệt đăng ký</span></a>
                     </li>
                 @endif
 
@@ -54,10 +60,10 @@
                 @endif
 
                 <li>
-                    <a href=""><span class="las la-calendar"></span><span>Cuộc họp</span></a>
+                    <a id="schedule" href="{{ route('schedule.index') }}"><span class="las la-calendar"></span><span>Lịch họp</span></a>
                 </li>
                 <li>
-                    <a href=""><span class="las la-signal"></span><span>Thống kê</span></a>
+                    <a id="document" href="{{ route('document.list') }}"><span class="las la-file-alt"></span><span>Biểu mẫu</span></a>
                 </li>
                 <li>
                     <a href="{{ route('logout') }}"><span class="las la-sign-out-alt"></span><span>Đăng xuất</span></a>

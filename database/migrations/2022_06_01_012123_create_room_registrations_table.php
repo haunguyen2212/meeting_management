@@ -15,7 +15,8 @@ class CreateRoomRegistrationsTable extends Migration
     {
         Schema::create('room_registrations', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('room_id')->unsigned();
+            $table->string('meet_name', 500);
+            $table->bigInteger('room_id')->unsigned()->nullable();
             $table->bigInteger('register_id')->unsigned();
             $table->bigInteger('department_id')->unsigned();
             $table->bigInteger('type_sp_id')->unsigned();

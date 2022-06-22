@@ -15,6 +15,10 @@
     font-family: 'Poppins', sans-serif;
 }
 
+a{
+    color: #000;
+}
+
 .sidebar{
     width: 345px;
     position: fixed;
@@ -439,6 +443,10 @@ td{
     border-color: var(--main-color);
 }
 
+.fw-bold{
+    font-weight: bold;
+}
+
 /* end button */
 
 /* modal */
@@ -453,7 +461,7 @@ td{
     pointer-events: none;
     transition: .35s;
     overflow-y: auto;
-    z-index: 9999999;
+    z-index: 500;
 }
 
 .modal-container.show{
@@ -604,6 +612,28 @@ td{
     font-weight: 700;
 }
 
+.filter{
+    display: flex;
+    align-items: center;
+}
+
+.filter span{
+    font-size: 13px;
+    font-weight: 700;
+    width: 90px;
+}
+
+.filter select{
+    height: 30px;
+    width: 100%;
+    outline: none;
+    border: 1px solid #ccc;
+    padding: 3px;
+    padding-right: 0px;
+    font-size: 12px;
+    border-radius: 3px;
+}
+
 /* end input form */
 
 /* pagination bootstrap */
@@ -716,6 +746,11 @@ td .status{
     .sidebar:hover li a span:last-child{
         display: inline;
     }
+
+    .filter{
+        margin-right: 0;
+    }
+
 }
 
 @media only screen and (max-width: 960px){

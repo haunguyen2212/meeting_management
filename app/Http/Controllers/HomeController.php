@@ -41,7 +41,7 @@ class HomeController extends Controller
             ->where('members.id', $id)
             ->select('members.id','members.name', 'account_id', 'date_of_birth', 'sex', 'address' ,'avatar', 'phone', 'email' , 'username', DB::raw('departments.name as department_name, positions.name as position_name, roles.name as role_name'))
             ->first();
-            return view('shared.home', compact('user', $user)); 
+            return view('shared.home', compact('user')); 
         //}
     }
 
@@ -86,7 +86,7 @@ class HomeController extends Controller
     }
 
     public function editProfile($id){
-        $user = Member::findOrFail($id);
+        $user = Member::find($id);
 
         if(!$this->checkGateEdit($user)){
             return response()->json(['status' => 0]);
@@ -103,7 +103,7 @@ class HomeController extends Controller
     }
 
     public function updateProfile($id, Request $request){
-        $user = Member::findOrFail($id);
+        $user = Member::find($id);
 
         if(!$this->checkGateEdit($user)){
             return response()->json(['status' => 0]);
@@ -162,7 +162,7 @@ class HomeController extends Controller
     }
     
     public function editAvatar($id){
-        $user = Member::findOrFail($id);
+        $user = Member::find($id);
 
         if(!$this->checkGateEdit($user)){
             return response()->json(['status' => 0]);
@@ -195,13 +195,18 @@ class HomeController extends Controller
             return response()->json(['error' => $validator->errors()->toArray(), 'status' => 0]);
         }
 
+
         $image = $request->file('img');
 
         if($image){
+            $user = Member::find($id);
+            if(!$this->checkGateEdit($user)){
+                return response()->json(['status' => 0]);
+            }
+
             $new_name = rand().'.'.$image->getClientOriginalExtension();
             $image->move(public_path('frontend/dist/img/avatar/'), $new_name);
 
-            $user = Member::find($id);
             $avatar_default = 'avt-default.jfif';
             $old_img = $user->avatar;
             if($old_img != $avatar_default){
@@ -224,5 +229,9 @@ class HomeController extends Controller
         LoginController::getSessionUser();
         Toastr::success('Cập nhật thành công', 'Thành công');
         return response()->json(['status' => 1]);
+    }
+
+    public function listDocument(){
+        return view('shared.document');
     }
 }

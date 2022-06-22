@@ -16,7 +16,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table width="100%">
+                        <table style="min-width: 1000px">
                             <thead>
                                 <tr>
                                     <td width="10%">Tài khoản</td>

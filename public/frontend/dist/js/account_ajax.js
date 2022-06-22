@@ -12,8 +12,14 @@ $('.btn-show').click(function(e){
         success: function(response){
             if(response.status == 1)
                 showDataUser(response.data);
+            else
+                window.location.reload();
+        },
+        error: function(error){
+            toastr["error"]("Có lỗi xảy ra, thử lại sau", "Thất bại");
+            setTimeout(function(){window.location.reload();}, 1500);
         }
-    })
+    });
 });
 
 function showDataUser(obj){
@@ -39,9 +45,16 @@ $('.btn-add').click(function(e){
         url: url,
         data:{_token:_token},
         success: function(response){
-            showFormAdd(response.data);
+            if(response.status == 1)
+                showFormAdd(response.data);
+            else
+                window.location.reload();
+        },
+        error: function(error){
+            toastr["error"]("Có lỗi xảy ra, thử lại sau", "Thất bại");
+            setTimeout(function(){window.location.reload();}, 1500);
         }
-    })
+    });
 });
 
 $('form#account-add').submit(function(e){
@@ -69,6 +82,10 @@ $('form#account-add').submit(function(e){
             else{
                 window.location.reload();
             }
+        },
+        error: function(error){
+            toastr["error"]("Có lỗi xảy ra, thử lại sau", "Thất bại");
+            setTimeout(function(){window.location.reload();}, 1500);
         }
     });
 });
@@ -104,8 +121,18 @@ $('.btn-edit').click(function(e){
         url: url,
         data:{_token:_token},
         success: function(response){
-            showFormEdit(response.data);
-            $('#account-edit').attr('data-url', update);
+            if(response.status == 1){
+                showFormEdit(response.data);
+                $('#account-edit').attr('data-url', update);
+            }
+            else{
+                window.location.reload();
+            }
+            
+        },
+        error: function(error){
+            toastr["error"]("Có lỗi xảy ra, thử lại sau", "Thất bại");
+            setTimeout(function(){window.location.reload();}, 1500);
         }
     });
 });
@@ -135,6 +162,10 @@ $('form#account-edit').submit(function(e){
             else{
                 window.location.reload();
             }
+        },
+        error: function(error){
+            toastr["error"]("Có lỗi xảy ra, thử lại sau", "Thất bại");
+            setTimeout(function(){window.location.reload();}, 1500);
         }
     });
 });
@@ -183,6 +214,10 @@ $('.btn-delete').click(function(e){
             data: {_token:_token},
             success: function(response){ 
                 window.location.reload();
+            },
+            error: function(error){
+                toastr["error"]("Có lỗi xảy ra, thử lại sau", "Thất bại");
+                setTimeout(function(){window.location.reload();}, 1500);
             }
         });
     }
@@ -220,6 +255,10 @@ $('#change-pass').submit(function(e){
             else{
                 window.location.reload();
             }
+        },
+        error: function(error){
+            toastr["error"]("Có lỗi xảy ra, thử lại sau", "Thất bại");
+            setTimeout(function(){window.location.reload();}, 1500);
         }
     });
 });

@@ -16,19 +16,19 @@ class TypeSupportSeeder extends Seeder
         DB::table('types_support')->insert([
             [
                 'id' => 1,
-                'name' => 'Hỗ trợ họp qua Hội nghị truyền hình',
+                'name' => 'Hội nghị truyền hình',
                 'created_at' => $dateTime,
                 'updated_at' => $dateTime,
             ],
             [
                 'id' => 2,
-                'name' => 'Hỗ trợ cán bộ kỹ thuật vận hành phòng họp trực tuyến của đơn vị',
+                'name' => 'Hỗ trợ cán bộ kỹ thuật',
                 'created_at' => $dateTime,
                 'updated_at' => $dateTime,
             ],
             [
                 'id' => 3,
-                'name' => 'Hỗ trợ phòng họp trực tuyến qua hệ thống Jitsi Meet',
+                'name' => 'Họp trực tuyến Jitsi Meet',
                 'created_at' => $dateTime,
                 'updated_at' => $dateTime,
             ],

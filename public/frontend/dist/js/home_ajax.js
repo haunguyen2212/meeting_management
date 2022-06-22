@@ -42,6 +42,10 @@ $('#change-pass').submit(function(e){
             else{
                 window.location.reload();
             }
+        },
+        error: function(error){
+            toastr["error"]("Có lỗi xảy ra, thử lại sau", "Thất bại");
+            setTimeout(function(){window.location.reload();}, 1500);
         }
     })
 });
@@ -64,6 +68,10 @@ $('.btn-edit').click(function(e){
             else{
                 window.location.reload();
             }   
+        },
+        error: function(error){
+            toastr["error"]("Có lỗi xảy ra, thử lại sau", "Thất bại");
+            setTimeout(function(){window.location.reload();}, 1500);
         }
     });
 });
@@ -93,6 +101,10 @@ $('#info-edit').submit(function(e){
             else{   
                 window.location.reload();
             }
+        },
+        error: function(error){
+            toastr["error"]("Có lỗi xảy ra, thử lại sau", "Thất bại");
+            setTimeout(function(){window.location.reload();}, 1500);
         }
     });
 });
@@ -124,6 +136,10 @@ $('.btn-img').click(function(e){
             else{
                 window.location.reload();
             }
+        },
+        error: function(error){
+            toastr["error"]("Có lỗi xảy ra, thử lại sau", "Thất bại");
+            setTimeout(function(){window.location.reload();}, 1500);
         }
     })
 });
@@ -153,6 +169,10 @@ $('#change-img').submit(function(e){
             else{
                 window.location.reload();
             }
+        },
+        error: function(error){
+            toastr["error"]("Có lỗi xảy ra, thử lại sau", "Thất bại");
+            setTimeout(function(){window.location.reload();}, 1500);
         }
     })
 });

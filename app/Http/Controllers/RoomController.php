@@ -15,7 +15,7 @@ class RoomController extends Controller
     public function index()
     {
         $rooms = Room::select('id', 'name')->paginate(8);
-        return view('admin.room', compact('rooms', $rooms));
+        return view('admin.room', compact('rooms'));
     }
 
     public function create()

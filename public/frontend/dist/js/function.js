@@ -15,6 +15,14 @@ function formatDate(date){
     return format;
 }
 
+function formatDateTime(dateTime){
+    var n = dateTime.trim().lastIndexOf(' ');
+    var date = dateTime.substring(0, n).split('-');
+    var time = dateTime.substring(n + 1, dateTime.length).split(':');
+    var format = time[0]+':'+time[1]+' '+date[2]+'/'+date[1]+'/'+date[0];
+    return format;
+}
+
 function chooseFile(e, fileInput, id){
     e.preventDefault();
     if(fileInput.files && fileInput.files[0]){

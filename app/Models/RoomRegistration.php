@@ -22,7 +22,7 @@ class RoomRegistration extends Model
     }
 
     public function register(){
-        return $this->belongsTo(Member::class, 'register_id', 'id');
+        return $this->belongsTo(User::class, 'register_id', 'id');
     }
 
     public function typeSupport(){

@@ -24,12 +24,4 @@ class Member extends Model
     public function account(){
         return $this->belongsTo(User::class, 'account_id', 'id');
     }
-
-    public function supporter(){
-        return $this->hasMany(Supporter::class, 'user_id', 'id');
-    }
-
-    public function roomRegistration(){
-        return $this->hasMany(RoomRegistration::class, 'register_id', 'id');
-    }
 }

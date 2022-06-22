@@ -15,6 +15,10 @@ $('.btn-show').click(function(e){
             else{
                 window.location.reload();
             }
+        },
+        error: function(error){
+            toastr["error"]("Có lỗi xảy ra, thử lại sau", "Thất bại");
+            setTimeout(function(){window.location.reload();}, 1500);
         }
     });
 });
@@ -55,6 +59,10 @@ $('#department-add').submit(function(e){
             else{
                 window.location.reload();
             }
+        },
+        error: function(error){
+            toastr["error"]("Có lỗi xảy ra, thử lại sau", "Thất bại");
+            setTimeout(function(){window.location.reload();}, 1500);
         }
     });
 });
@@ -76,6 +84,10 @@ $('.btn-edit').click(function(e){
             else{
                 window.location.reload();
             }
+        },
+        error: function(error){
+            toastr["error"]("Có lỗi xảy ra, thử lại sau", "Thất bại");
+            setTimeout(function(){window.location.reload();}, 1500);
         }
     });
 });
@@ -105,6 +117,10 @@ $('#department-edit').submit(function(e){
             else{
                 window.location.reload();
             } 
+        },
+        error: function(error){
+            toastr["error"]("Có lỗi xảy ra, thử lại sau", "Thất bại");
+            setTimeout(function(){window.location.reload();}, 1500);
         }
     })
 });
@@ -120,6 +136,10 @@ $('.btn-delete').click(function(e){
             data: {_token:_token},
             success: function(response){ 
                 window.location.reload();          
+            },
+            error: function(error){
+                toastr["error"]("Có lỗi xảy ra, thử lại sau", "Thất bại");
+                setTimeout(function(){window.location.reload();}, 1500);
             }
         });
     }

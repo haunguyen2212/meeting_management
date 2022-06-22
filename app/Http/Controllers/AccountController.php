@@ -23,7 +23,7 @@ class AccountController extends Controller
         $accounts = Member::join('users', 'account_id', 'users.id')
                 ->select('members.id', 'username', 'members.name', 'account_id', 'date_of_birth', 'address', 'phone', 'email')
                 ->paginate(8);
-        return view('admin.account', compact('accounts', $accounts));
+        return view('admin.account', compact('accounts'));
     }
 
     public function create()
@@ -32,7 +32,14 @@ class AccountController extends Controller
         $data['positions'] = Position::select('id', 'name')->get();
         $data['roles'] = Role::select('id', 'name')->orderBy('id', 'desc')->get();
         $data['departments'] = Department::select('id', 'name')->get();
-        return response()->json(['data' => $data, 'status' => 1]);
+
+        if(!empty($data)){
+            return response()->json(['data' => $data, 'status' => 1]);
+        }
+        else{
+            Toastr::error('Có lỗi xảy ra, thử lại sau', 'Thất bại');
+            return response()->json(['status' => 0]);
+        }
     }
 
     public function store(Request $request)
@@ -117,12 +124,17 @@ class AccountController extends Controller
                 ->where('members.id', $id)
                 ->select('members.id', 'members.name', 'date_of_birth', 'sex', 'address', 'avatar', 'phone', 'email', 'username', DB::raw("roles.name as role_name, departments.name as department_name, positions.name as position_name"))
                 ->first();
-        return response()->json(['data' => $data, 'status' => 1]);
+        if(!empty($data)){
+            return response()->json(['data' => $data, 'status' => 1]);
+        }
+        else{
+            Toastr::error('Có lỗi xảy ra, thử lại sau', 'Thất bại');
+            return response()->json(['status' => 0]);
+        }
     }
 
     public function edit($id)
     {
-        $data = [];
         $data['user'] = Member::join('users', 'account_id', 'users.id')
                         ->where('members.id', $id)
                         ->select('members.id', 'name', 'department_id', 'position_id', 'username', 'role_id', 'date_of_birth', 'sex', 'address', 'avatar', 'phone', 'email')
@@ -130,7 +142,14 @@ class AccountController extends Controller
         $data['positions'] = Position::select('id', 'name')->get();
         $data['roles'] = Role::select('id', 'name')->get();
         $data['departments'] = Department::select('id', 'name')->get();
-        return response()->json(['data' => $data, 'status' => 1]);
+
+        if(!empty($data['user'])){
+            return response()->json(['data' => $data, 'status' => 1]);
+        }
+        else{
+            Toastr::error('Có lỗi xảy ra, thử lại sau', 'Thất bại');
+            return response()->json(['status' => 0]);
+        }
     }
 
     public function update(Request $request, $id)

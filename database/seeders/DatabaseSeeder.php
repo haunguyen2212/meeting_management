@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             RoomSeeder::class,
             TypeSupportSeeder::class,
             MeetingManagementSeeder::class,
+            RoomRegistrationSeeder::class,
         ]);
     }
 }

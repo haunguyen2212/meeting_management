@@ -18,7 +18,7 @@ class DepartmentController extends Controller
                 ->select('departments.id', 'departments.name', DB::raw('count(members.id) as number_member'))
                 ->groupBy('departments.id', 'departments.name')
                 ->paginate(8);
-        return view('admin.department', compact('departments', $departments));
+        return view('admin.department', compact('departments'));
     }
 
     public function create()
