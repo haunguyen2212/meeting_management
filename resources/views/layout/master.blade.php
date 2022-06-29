@@ -21,53 +21,68 @@
 
         <div class="sidebar-menu">
             <ul>
-                <li>
-                    <a id="home" href="{{ route('home') }}"><span class="las la-home"></span><span>Trang chủ</span></a>
-                </li>
-                <li>
-                    <a id="register" href="{{ route('register.index') }}"><span class="las la-phone-volume"></span><span>Đăng ký họp</span></a>
-                </li>
+                @auth
+                    <li>
+                        <a id="home" href="{{ route('home') }}"><span class="las la-home"></span><span>Trang chủ</span></a>
+                    </li>
+                    <li>
+                        <a id="registration" href="{{ route('registration.index') }}"><span class="las la-phone-volume"></span><span>Đăng ký họp</span></a>
+                    </li>
 
-                @if (Auth::user()->role_id == 1)
-                    <li>
-                        <a id="account" href="{{ route('account.index') }}"><span class="las la-user-circle"></span><span>Tài khoản</span></a>
-                    </li>
-                    <li>
-                        <a id="room" href="{{ route('room.index') }}"><span class="las la-warehouse"></span><span>Phòng họp</span></a>
-                    </li>
+                    @if (Auth::user()->role_id == 1)
+                        <li>
+                            <a id="account" href="{{ route('account.index') }}"><span class="las la-user-circle"></span><span>Tài khoản</span></a>
+                        </li>
+                        <li>
+                            <a id="room" href="{{ route('room.index') }}"><span class="las la-warehouse"></span><span>Phòng họp</span></a>
+                        </li>
+                        
+                        <li>
+                            <a id="department" href="{{ route('department.index') }}"><span class="las la-city"></span><span>Đơn vị</span></a>
+                        </li>
+                        <li>
+                            <a id="meeting-list" href="{{ route('meeting.index') }}"><span class="las la-calendar-check"></span><span>Cuộc họp</span></a>
+                        </li>
+                        <li>
+                            <a href=""><span class="las la-signal"></span><span>Thống kê</span></a>
+                        </li>
+                    @endif
                     
-                    <li>
-                        <a id="department" href="{{ route('department.index') }}"><span class="las la-city"></span><span>Đơn vị</span></a>
-                    </li>
-                    <li>
-                        <a id="meeting-list" href="{{ route('meeting.index') }}"><span class="las la-calendar-check"></span><span>Cuộc họp</span></a>
-                    </li>
-                    <li>
-                        <a href=""><span class="las la-signal"></span><span>Thống kê</span></a>
-                    </li>
-                @endif
-                
-                @if (Auth::user()->role_id == 2)
-                    <li>
-                        <a id="approval" href="{{ route('approval.index') }}"><span class="las la-clipboard-list"></span><span>Phê duyệt đăng ký</span></a>
-                    </li>
-                @endif
+                    @if (Auth::user()->role_id == 2)
+                        <li>
+                            <a id="approval" href="{{ route('approval.index') }}">
+                                <span class="las la-clipboard-list"></span>
+                                <span>Phê duyệt đăng ký 
+                                    @if ($num_approval > 0 )
+                                    ({{ $num_approval }})
+                                    @endif
+                                </span></a>
+                        </li>
+                    @endif
 
-                @if (Auth::user()->role_id == 3)
-                    <li>
-                        <a href=""><span class="las la-edit"></span><span>Phân công cán bộ</span></a>
-                    </li>
-                @endif
+                    @if (Auth::user()->role_id == 3)
+                        <li>
+                            <a id="assignment" href="{{ route('assignment.index') }}">
+                                <span class="las la-edit"></span>
+                                <span>Phân công cán bộ 
+                                    @if ($num_assignment > 0)
+                                    ({{ $num_assignment }})
+                                    @endif
+                                </span>
+                            </a>
+                        </li>
+                    @endif
 
-                <li>
-                    <a id="schedule" href="{{ route('schedule.index') }}"><span class="las la-calendar"></span><span>Lịch họp</span></a>
-                </li>
-                <li>
-                    <a id="document" href="{{ route('document.list') }}"><span class="las la-file-alt"></span><span>Biểu mẫu</span></a>
-                </li>
-                <li>
-                    <a href="{{ route('logout') }}"><span class="las la-sign-out-alt"></span><span>Đăng xuất</span></a>
-                </li>
+                    <li>
+                        <a id="schedule" href="{{ route('schedule.index') }}"><span class="las la-calendar"></span><span>Lịch họp</span></a>
+                    </li>
+                    <li>
+                        <a id="document" href="{{ route('document.list') }}"><span class="las la-file-alt"></span><span>Biểu mẫu</span></a>
+                    </li>
+                    <li>
+                        <a href="{{ route('logout') }}"><span class="las la-sign-out-alt"></span><span>Đăng xuất</span></a>
+                    </li>
+                @endauth
             </ul>
         </div>
     </div>
@@ -85,11 +100,15 @@
                 <input type="search" placeholder="Tìm kiếm ...">
             </div>
             <div class="user-wrapper">
-                <img src="./dist/img/avatar/{{ Session::get('user')->avatar }}" width="40px" height="40px" alt="avatar">
-                <div>
-                    <h4>{{ Session::get('user')->name }}</h4>
-                    <small>{{ Session::get('user')->roleName }}</small>
-                </div>
+                
+                @auth
+                    <img src="./dist/img/avatar/{{ Session::get('user')->avatar }}" width="40px" height="40px" alt="avatar">
+                    <div>
+                        <h4>{{ Session::get('user')->name }}</h4>
+                        <small>{{ Session::get('user')->roleName }}</small>
+                    </div>
+                @endauth
+
             </div>
         </header>
 

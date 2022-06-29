@@ -1,18 +1,21 @@
-@extends('layout.master')
-
-@section('title', 'Lịch họp tuần')
-
-@section('style')
+<!DOCTYPE html>
+<html lang="vn">
+<head>
+    <base href="{{asset('frontend')}}/">
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>In lịch họp</title>
+    <link rel="stylesheet" href="./dist/css/style.css">
     <link rel="stylesheet" href="./dist/css/schedule.css">
-@endsection
-
-@section('content')
+</head>
+<body>
     <div class="recent-grid grid-col-100">
         <div class="meeting-schedule">
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table style="min-width: 1000px">
+                        <table style="min-width: 600px">
                             <thead>
                                 <tr>
                                     <td>Phòng / Ngày</td>
@@ -50,16 +53,8 @@
                         </table>
                     </div>
                 </div>
-                <div>
-                    <a class="btn btn-main ms-3 mb-3" href="{{ route('schedule.print') }}">Tải xuống</a>
-                </div>
             </div>
         </div>
     </div>
-@endsection
-
-@section('script')
-<script>
-    $('#schedule').addClass('active');
-</script>
-@endsection
+</body>
+</html>

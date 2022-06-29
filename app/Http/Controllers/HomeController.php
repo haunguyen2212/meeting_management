@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Member;
+use App\Models\RoomRegistration;
+use App\Models\Supporter;
 use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -25,41 +28,44 @@ class HomeController extends Controller
     }
 
     public function index(){
-        // if(Auth::user()->role_id == 1){
-        //     $users = Member::join('users', 'account_id', 'users.id')
-        //         ->select('name', 'avatar' , 'username')
-        //         ->take(6)
-        //         ->get();
-        // return view('shared.home', compact('users', $users));
-        // }
-        //else{
-            $id = Member::where('account_id', Auth::id())->first()->id;
-            $user = Member::join('users', 'account_id', 'users.id')
+        $id = Member::where('account_id', Auth::id())->first()->id;
+        $user = Member::join('users', 'account_id', 'users.id')
             ->join('roles', 'role_id', 'roles.id')
             ->join('departments', 'department_id', 'departments.id')
             ->join('positions', 'position_id', 'positions.id')
             ->where('members.id', $id)
             ->select('members.id','members.name', 'account_id', 'date_of_birth', 'sex', 'address' ,'avatar', 'phone', 'email' , 'username', DB::raw('departments.name as department_name, positions.name as position_name, roles.name as role_name'))
             ->first();
-            return view('shared.home', compact('user')); 
-        //}
+        $notifies = RoomRegistration::leftJoin('supporters', 'supporter_id', '=', 'supporters.id')
+            ->leftJoin('users', 'user_id', '=', 'users.id')
+            ->leftJoin('members', 'account_id', '=', 'users.id')
+            ->select('meet_name', 'type_sp_id', 'status', 'feedback', 'approval_time', 'assignment_time', DB::raw('members.name as supporter_name, supporters.id as supporter_id'))
+            ->where('register_id', Auth::id())
+            ->whereIn('status', [-1, 1])
+            ->orderBy('approval_time', 'desc')
+            ->take(15)
+            ->get();
+        return view('shared.home', compact('user', 'notifies')); 
     }
 
     public function changePassword(Request $request){
-        $old_pass = Auth::user()->password;
 
         $rules = [
-            'old_pass' => 'required',
+            'old_pass' => 'required|max:20|current_password',
             'new_pass' => 'required|min:8|max:20|different:old_pass|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/',
+            'renew_pass' => 'same:new_pass',
         ];
 
         $messages = [
             'old_pass.required' => 'Chưa nhập mật khẩu hiện tại',
+            'old_pass.max' => 'Mật khẩu quá dài',
+            'old_pass.current_password' => 'Mật khẩu không chính xác',
             'new_pass.required' => 'Chưa nhập mật khẩu mới',
             'new_pass.min' => 'Mật khẩu ít nhất 8 kí tự',
             'new_pass.max' => 'Mật khẩu tối đa 20 kí tự',
             'new_pass.different' => 'Mật khẩu mới không được trùng với mật khẩu cũ',
             'new_pass.regex' => 'Mật khẩu phải có ít nhất 1 kí tự hoa, 1 kí tự thường và 1 số',
+            'renew_pass.same' => 'Mật khẩu không trùng khớp',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -67,21 +73,17 @@ class HomeController extends Controller
             return response()->json(['error' => $validator->errors()->toArray(), 'status' => 0]);
         }
 
-        if (Hash::check($request->old_pass, $old_pass)) {
-            $change = User::find(Auth::id())->update([
-                'password' => Hash::make($request->new_pass),
-            ]);
+        
+        $change = User::find(Auth::id())->update([
+            'password' => Hash::make($request->new_pass),
+        ]);
     
-            if ($change) {
-                Toastr::success('Đổi mật khẩu thành công', 'Thành công');
-                return response()->json(['status' => 1]);
-            } else {
-                Toastr::error('Có lỗi xảy ra, thử lại sau', 'Thất bại');
-                return response()->json(['status' => 0]);
-            }
+        if ($change) {
+            Toastr::success('Đổi mật khẩu thành công', 'Thành công');
+            return response()->json(['status' => 1]);
         } else {
-            $error['old_pass'] = ['Mật khẩu không trùng khớp'];
-            return response()->json(['error' => $error,'status' => 0 ]);
+            Toastr::error('Có lỗi xảy ra, thử lại sau', 'Thất bại');
+            return response()->json(['status' => 0]);
         }
     }
 
@@ -110,25 +112,31 @@ class HomeController extends Controller
         }
 
         $rules = [
-            'name_edit' => 'required',
-            'gender_edit' => 'required',
+            'name_edit' => 'required|max:50',
+            'gender_edit' => 'required|in:0,1',
             'date_edit' => 'required|date_format:d-m-Y',
-            'phone_edit' => 'required',
-            'address_edit' => 'required',
+            'phone_edit' => 'required|max:20',
+            'address_edit' => 'required|max:200',
             'email_edit' => [
                 'required',
+                'max:100',
                 Rule::unique('members', 'email')->ignore($id, 'id'),
             ],
         ];
 
         $messages = [
             'name_edit.required' => 'Chưa nhập họ tên',
+            'name_edit.max' => 'Họ tên quá dài',
             'gender_edit.required' => 'Chưa chọn giới tính',
+            'gender_edit.in' => 'Giá trị không hợp lệ',
             'date_edit.required' => 'Chưa nhập ngày sinh',
             'date_edit.date_format' => 'Ngày chưa đúng định dạng',
             'phone_edit.required' => 'Chưa nhập số điện thoại',
+            'phone_edit.max' => 'Số điện thoại quá dài',
             'address_edit.required' => 'Chưa nhập địa chỉ',
+            'address_edit.max' => 'Địa chỉ quá dài',
             'email_edit.required' => 'Chưa nhập email',
+            'email_edit.max' => 'Email quá dài',
             'email_edit.unique' => 'Email đã tồn tại',
         ];
 
@@ -233,5 +241,19 @@ class HomeController extends Controller
 
     public function listDocument(){
         return view('shared.document');
+    }
+
+    public function getInfoSupporter($id){
+        $supporter = Supporter::join('users', 'user_id', '=', 'users.id')
+            ->join('members', 'account_id', '=', 'users.id')
+            ->where('supporters.id', $id)
+            ->first();
+        
+        if(empty($supporter)){
+            Toastr::warning('Không tìm thấy thông tin cán bộ', 'Cảnh báo');
+            return redirect()->route('home');
+        }
+        
+        return view('shared.supporter', compact('supporter'));
     }
 }

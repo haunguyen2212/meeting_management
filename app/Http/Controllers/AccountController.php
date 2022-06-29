@@ -45,36 +45,46 @@ class AccountController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'name_add' => 'required',
-            'gender_add' => 'required',
+            'name_add' => 'required|max:50',
+            'gender_add' => 'required|in:0,1',
             'date_add' => 'required|date_format:d-m-Y',
-            'phone_add' => 'required',
-            'address_add' => 'required',
-            'department_add' => 'required',
-            'position_add' => 'required',
-            'email_add' => 'required|email|unique:members,email',
-            'role_add' => 'required',
-            'username_add' => 'required|unique:users,username',
-            'password_add' => 'required|min:5|max:20',
+            'phone_add' => 'required|max:20',
+            'address_add' => 'required|max:200',
+            'department_add' => 'required|exists:departments,id',
+            'position_add' => 'required|exists:positions,id',
+            'email_add' => 'required|email|max:100|unique:members,email',
+            'role_add' => 'required|exists:roles,id',
+            'username_add' => 'required|min:5|max:20|unique:users,username',
+            'password_add' => 'required|min:8|max:20',
         ];
 
         $messages = [
             'name_add.required' => 'Chưa nhập họ tên',
+            'name_add.max' => 'Họ tên quá dài',
             'gender_add.required' => 'Chưa chọn giới tính',
+            'gender_add.in' => 'Giá trị không hợp lệ',
             'date_add.required' => 'Chưa nhập ngày sinh',
             'date_add.date_format' => 'Ngày chưa đúng định dạng',
             'phone_add.required' => 'Chưa nhập số điện thoại',
+            'phone_add.max' => 'Số điện thoại quá dài',
             'address_add.required' => 'Chưa nhập địa chỉ',
+            'address_add.max' => 'Địa chỉ quá dài',
             'department_add.required' => 'Chưa chọn đơn vị',
+            'department_add.exists' => 'Đơn vị không tồn tại',
             'position_add.required' => 'Chưa chọn chức vụ',
+            'position_add.exists' => 'Chức vụ không tồn tại',
             'email_add.required' => 'Chưa nhập email',
             'email_add.email' => 'Email không đúng',
+            'email_add.max' => 'Email quá dài',
             'email_add.unique' => 'Email đã tồn tại',
             'role_add.required' => 'Chưa chọn loại tài khoản',
+            'role_add.exists' => 'Vai trò không tồn tại',
             'username_add.required' => 'Chưa nhập tên tài khoản',
+            'username_add.min' => 'Tên tài khoản ít nhất 5 kí tự',
+            'username_add.max' => 'Tên tài khoản không quá 20 kí tự',
             'username_add.unique' => 'Tài khoản đã tồn tại',
             'password_add.required' => 'Chưa nhập mật khẩu',
-            'password_add.min' => 'Mật khẩu ít nhất 5 kí tự',
+            'password_add.min' => 'Mật khẩu ít nhất 8 kí tự',
             'password_add.max' => 'Mật khẩu tối đa 20 kí tự',
         ];
 
@@ -160,37 +170,50 @@ class AccountController extends Controller
         $account = User::find($account_id);
         
         $rules = [
-            'name_edit' => 'required',
-            'gender_edit' => 'required',
+            'name_edit' => 'required|max:50',
+            'gender_edit' => 'required|in:0,1',
             'date_edit' => 'required|date_format:d-m-Y',
-            'phone_edit' => 'required',
-            'address_edit' => 'required',
-            'department_edit' => 'required',
-            'position_edit' => 'required',
+            'phone_edit' => 'required|max:20',
+            'address_edit' => 'required|max:200',
+            'department_edit' => 'required|exists:departments,id',
+            'position_edit' => 'required|exists:positions,id',
             'email_edit' => [
                 'required',
+                'max:100',
                 Rule::unique('members', 'email')->ignore($id, 'id'),
             ],
-            'role_edit' => 'required',
+            'role_edit' => 'required|exists:roles,id',
             'username_edit' => [
                 'required',
+                'min:5',
+                'max:20',
                 Rule::unique('users', 'username')->ignore($account_id, 'id'),
             ],
         ];
 
         $messages = [
             'name_edit.required' => 'Chưa nhập họ tên',
+            'name_edit.max' => 'Tên quá dài',
             'gender_edit.required' => 'Chưa chọn giới tính',
+            'gender_edit.in' => 'Giá trị không hợp lệ',
             'date_edit.required' => 'Chưa nhập ngày sinh',
             'date_edit.date_format' => 'Ngày chưa đúng định dạng',
             'phone_edit.required' => 'Chưa nhập số điện thoại',
+            'phone_edit.max' => 'Số điện thoại quá dài',
             'address_edit.required' => 'Chưa nhập địa chỉ',
+            'address_edit.max' => 'Địa chỉ quá dài',
             'department_edit.required' => 'Chưa chọn đơn vị',
+            'department_edit.exists' => 'Đơn vị không tồn tại',
             'position_edit.required' => 'Chưa chọn chức vụ',
+            'position_edit.exists' => 'Chức vụ không tồn tại',
             'email_edit.required' => 'Chưa nhập email',
+            'email_edit.max' => 'Email quá dài',
             'email_edit.unique' => 'Email đã tồn tại',
             'role_edit.required' => 'Chưa chọn loại tài khoản',
+            'role_edit.exists' => 'Loại tài khoản không tồn tại',
             'username_edit.required' => 'Chưa nhập tên tài khoản',
+            'username_edit.min' => 'Tên tài khoản ít nhất 5 kí tự',
+            'username_edit.max' => 'Tên tài khoản tối đa 20 kí tự',
             'username_edit.unique' => 'Tài khoản đã tồn tại',
         ];
 
@@ -259,12 +282,13 @@ class AccountController extends Controller
 
     public function changePassword($id, Request $request){
         $rules = [
-            'password' => 'required|min:8',
+            'password' => 'required|min:8|max:20',
         ];
 
         $messages = [
             'password.required' => 'Mật khẩu không được bỏ trống',
             'password.min' => 'Mật khẩu ít nhất 8 kí tự',
+            'password.max' => 'Mật khẩu tối đa 20 kí tự',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);

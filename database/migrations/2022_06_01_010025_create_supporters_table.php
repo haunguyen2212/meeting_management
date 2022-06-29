@@ -15,8 +15,8 @@ class CreateSupportersTable extends Migration
     {
         Schema::create('supporters', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
             $table->bigInteger('user_id')->unsigned();
+            $table->char('hide', 1)->default(0);
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });

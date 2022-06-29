@@ -2,19 +2,9 @@ var _token = $('meta[name="csrf-token"]').attr('content');
 
 // Change password
 $('.btn-password').click(function(e){
-    e.preventDefault();
-    $('.error-text').html('');
-    var pass = $('#new_pass').val();
-    var repass = $('#renew_pass').val();
-    if(pass == repass){
-        var url = $('.btn-change-pass').attr('data-url');
-        $('#change-pass').attr('data-url', url);
-        $('#change-pass').submit();
-
-    }
-    else{
-        $('.error_renew_pass').html('Mật khẩu không trùng khớp');
-    }
+    var url = $('.btn-change-pass').attr('data-url');
+    $('#change-pass').attr('data-url', url);
+    $('#change-pass').submit();
 });
 
 $('#change-pass').submit(function(e){

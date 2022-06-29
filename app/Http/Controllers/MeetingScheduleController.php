@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Room;
 use App\Models\RoomRegistration;
+use Barryvdh\DomPDF\Facade\PDF;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 
 class MeetingScheduleController extends Controller
 {
-    public function index(){
+
+    public function getSchedule(){
         $now = Carbon::now();
         $weekStartDate = $now->startOfWeek()->format('Y-m-d');
         $weekEndDate = $now->endOfWeek()->format('Y-m-d');
@@ -37,6 +39,22 @@ class MeetingScheduleController extends Controller
             }
         }
 
+        return [$rooms, $dates, $schedules];
+    }
+
+    public function index(){
+        [$rooms, $dates, $schedules] = $this->getSchedule();
         return view('shared.schedule', compact('rooms', 'dates','schedules'));
+    }
+
+    public function printPDF(){
+        [$rooms, $dates, $schedules] = $this->getSchedule();
+        $data = [
+            'rooms' => $rooms,
+            'dates' => $dates,
+            'schedules' => $schedules
+        ];
+        $pdf = PDF::loadView('shared.printschedule', $data);
+        return $pdf->download('lich-su-dung-phong-hop.pdf');
     }
 }

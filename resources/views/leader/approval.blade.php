@@ -8,6 +8,17 @@
             <div class="card">
                 <div class="card-header">
                     <h3>Danh sách đăng ký</h3>
+                    <form action="" method="get">
+                        <span class="filter">
+                            <span>Hiển thị:</span>
+                            <select name="filter" onchange="this.form.submit();">
+                                <option {{ request('filter') == 'new' ? 'selected' : '' }} value="new">Chờ phản hồi</option>
+                                <option {{ request('filter') == 'accept' ? 'selected' : '' }} value="accept">Đã chấp nhận</option>
+                                <option {{ request('filter') == 'deny' ? 'selected' : '' }} value="deny">Đã từ chối</option>
+                                <option {{ request('filter') == 'all' ? 'selected' : '' }} value="all">Tất cả</option>
+                            </select>
+                        </span>
+                    </form>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -39,7 +50,13 @@
                                             {{ date("H:i d/m/Y", strtotime($meeting->end_time)) }}
                                         </td>
                                         <td>{{ $meeting->room_name }}</td>
-                                        <td>{{ $meeting->document }}</td>
+                                        <td>
+
+                                            @if ($meeting->document != NULL)
+                                                <a target="_blank" href="./dist/upload/{{ $meeting->document }}">{{ $meeting->document }}</a>
+                                            @endif
+                                            
+                                        </td>
                                             
                                         @switch($meeting->status)
                                             @case('-1')
@@ -70,6 +87,7 @@
                         </table>
                     </div>
                 </div>
+                {{ $meetings->links() }}
             </div>
         </div>
     </div>

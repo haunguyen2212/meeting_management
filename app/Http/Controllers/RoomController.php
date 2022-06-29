@@ -26,11 +26,12 @@ class RoomController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'name_add' => 'required',
+            'name_add' => 'required|max:50',
         ];
 
         $messages = [
             'name_add.required' => 'Tên phòng không được bỏ trống',
+            'name_add.max' => 'Tên phòng quá dài',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -75,11 +76,12 @@ class RoomController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-            'name_edit' => 'required',
+            'name_edit' => 'required|max:50',
         ];
 
         $messages = [
             'name_edit.required' => 'Tên phòng không được bỏ trống',
+            'name_edit.max' => 'Tên phòng quá dài',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);

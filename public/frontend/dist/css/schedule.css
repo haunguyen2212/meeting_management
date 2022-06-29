@@ -1,0 +1,13 @@
+td{
+    border: 1px solid #f0f0f0;
+}
+
+thead td{
+    width: 12.5%;
+    text-align: center;
+}
+
+thead td span{
+    font-weight: normal;
+    font-size: 12px;
+}

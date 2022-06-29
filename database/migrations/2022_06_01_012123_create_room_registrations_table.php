@@ -25,6 +25,7 @@ class CreateRoomRegistrationsTable extends Migration
             $table->dateTime('start_time');
             $table->dateTime('end_time');
             $table->dateTime('approval_time')->nullable();
+            $table->dateTime('assignment_time')->nullable();
             $table->string('document', 100)->nullable();
             $table->string('status', 2)->default('0');
             $table->string('feedback', 500)->nullable();

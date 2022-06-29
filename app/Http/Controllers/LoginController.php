@@ -34,12 +34,13 @@ class LoginController extends Controller
         $password = $request->password;
 
         $rules = [
-            'username' => 'required',
+            'username' => 'required|max:20',
             'password' => 'required|max:20',
         ];
 
         $messages = [
             'username.required' => 'Chưa nhập tên tài khoản',
+            'username.max' => 'Tên tài khoản quá dài',
             'password.required' => 'Mật khẩu không được bỏ trống',
             'password.max' => 'Mật khẩu vượt quá giới hạn',
         ];

@@ -10,21 +10,52 @@ use Illuminate\Support\Facades\DB;
 
 class RegistrationApprovalController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
+        $filter = $request->filter ?? 'new';
         $now = Carbon::now()->format('Y-m-d H:i:s');
         $meetings = RoomRegistration::join('departments', 'department_id', '=', 'departments.id')
             ->join('types_support', 'type_sp_id', '=' , 'types_support.id')
             ->leftJoin('rooms', 'room_id', '=', 'rooms.id')
-            ->where('test_time', '>=', $now)
             ->select('room_registrations.id', 'meet_name', 'test_time', 'start_time' ,'end_time', 'document', 'status', DB::raw('departments.name as department_name, types_support.name as type_name, rooms.name as room_name'))
-            ->orderBy('test_time', 'asc')
-            ->get();
+            ->orderBy('test_time', 'asc');
+
+        switch($filter){
+            case 'new':
+                $meetings = $meetings->where('test_time', '>=', $now)->where('status', 0)->paginate(10);
+                break;
+            case 'accept':
+                $meetings = $meetings->where('status', 1)->paginate(10);
+                break;
+            case 'deny':
+                $meetings = $meetings->where('status', -1)->paginate(10);
+                break;
+            default:
+                $meetings = $meetings->paginate(10);
+        }
+
+        $meetings->appends(['filter' => $filter]);
         return view('leader.approval', compact('meetings'));
     }
 
     public function accept($id){
         $now = Carbon::now()->format('Y-m-d H:i:s');
         $meeting = RoomRegistration::find($id);
+        $test_time = date("Y-m-d H:i:s", strtotime($meeting->test_time));
+        $end_time = date("Y-m-d H:i:s", strtotime($meeting->end_time));
+        if($meeting->type_sp_id == 1){
+            $checkTime = RoomRegistration::where('room_id', $meeting->room_id)
+                ->where('status', 1)
+                ->where(function($query) use ($test_time, $end_time){
+                    $query->whereBetween('test_time', [$test_time, $end_time])
+                        ->orWhereBetween('end_time', [$test_time, $end_time])
+                        ->orWhereRaw("'".$test_time."' BETWEEN test_time AND end_time")
+                        ->orWhereRaw("'".$end_time."' BETWEEN test_time AND end_time");
+                })->first();
+            if($checkTime){
+                Toastr::error('Phòng đã sử dụng cho cuộc họp "'.$checkTime->meet_name.'"', 'Không thành công');
+                return response()->json(['status' => 0]);
+            };
+        }
         $update = $meeting->update([
             'status' => 1,
             'approval_time' => $now,
