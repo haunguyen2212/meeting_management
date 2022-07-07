@@ -43,9 +43,6 @@
                         <li>
                             <a id="meeting-list" href="{{ route('meeting.index') }}"><span class="las la-calendar-check"></span><span>Cuộc họp</span></a>
                         </li>
-                        <li>
-                            <a href=""><span class="las la-signal"></span><span>Thống kê</span></a>
-                        </li>
                     @endif
                     
                     @if (Auth::user()->role_id == 2)
@@ -73,11 +70,20 @@
                         </li>
                     @endif
 
+                    @if (Auth::user()->supporter && Auth::user()->supporter->hide == 0)
+                        <li>
+                            <a id="support" href="{{ route('support.index') }}"><span class="las la-chalkboard-teacher"></span><span>Lịch hỗ trợ</span></a>
+                        </li>
+                    @endif
+
                     <li>
                         <a id="schedule" href="{{ route('schedule.index') }}"><span class="las la-calendar"></span><span>Lịch họp</span></a>
                     </li>
                     <li>
                         <a id="document" href="{{ route('document.list') }}"><span class="las la-file-alt"></span><span>Biểu mẫu</span></a>
+                    </li>
+                    <li>
+                        <a id="statistical" href="{{ route('statistical.index') }}"><span class="las la-signal"></span><span>Thống kê</span></a>
                     </li>
                     <li>
                         <a href="{{ route('logout') }}"><span class="las la-sign-out-alt"></span><span>Đăng xuất</span></a>

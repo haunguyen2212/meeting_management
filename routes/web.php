@@ -10,6 +10,8 @@ use App\Http\Controllers\MeetingScheduleController;
 use App\Http\Controllers\RegistrationApprovalController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomRegistrationController;
+use App\Http\Controllers\StatisticalController;
+use App\Http\Controllers\SupporterController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -18,7 +20,6 @@ Route::get('/', [HomeController::class, 'index'])->middleware('auth')->name('hom
 Route::get('login', [LoginController::class, 'index'])->name('login');
 Route::post('login', [LoginController::class, 'check'])->name('login.check');
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
-
 
 Route::group(['prefix' => 'home', 'middleware' => 'auth'], function(){
     Route::patch('password/change', [HomeController::class, 'changePassword'])->name('password.change');
@@ -31,6 +32,7 @@ Route::group(['prefix' => 'home', 'middleware' => 'auth'], function(){
     Route::get('schedule/printPDF', [MeetingScheduleController::class, 'printPDF'])->name('schedule.print');
     Route::get('document', [HomeController::class, 'listDocument'])->name('document.list');
     Route::get('supporter/{id}', [HomeController::class, 'getInfoSupporter'])->name('supporter.info');
+    Route::get('statistical', [StatisticalController::class, 'index'])->name('statistical.index');
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'isAdmin']], function(){
@@ -58,6 +60,9 @@ Route::group(['prefix' => 'manager', 'middleware' => ['auth', 'isManager']], fun
         Route::patch('hide/{id}', [AssignmentController::class, 'hideSupporter'])->name('supporter.hide');
         Route::get('create', [AssignmentController::class, 'createSupporter'])->name('supporter.create');
         Route::post('store', [AssignmentController::class, 'storeSupporter'])->name('supporter.store');
-    });
-    
+    });  
+});
+
+Route::group(['prefix' => 'support', 'middleware' => ['auth', 'isSupporter']], function(){
+    Route::get('/', [SupporterController::class, 'index'])->name('support.index');
 });

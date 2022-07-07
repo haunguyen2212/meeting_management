@@ -31,7 +31,7 @@
                                             <button class="btn btn-main btn-change-pass" 
                                                     onclick="showModal(event, '#changePass')" 
                                                     data-url="{{ route('password.change') }}"
-                                            >Đổi mật khẩu</button>
+                                            ><span class="las la-key"></span></button>
                                         </td>
                                     </tr>
                                     <tr>
@@ -71,22 +71,33 @@
                     <div class="card-header">
                         <h3>Thông báo</h3>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" style="padding-top: 0">
+                        @if (Auth::user()->role_id == 2)
+                            
+                            @foreach ($assignments as $assignment)
+                                <div class="alert alert-primary">
+                                    Cuộc họp <strong>"{{ $assignment->meet_name }}"</strong> đã được bộ phận quản lý phân công cán bộ <a class="text-danger" href="{{ route('supporter.info', ['id' => $assignment->supporter_id]) }}"><strong>{{ $assignment->supporter_name }}</strong></a> hỗ trợ.<br>
+                                    Thời gian cuộc họp: {{ date("H:i d/m/Y", strtotime($assignment->test_time)) }} - {{ date("H:i d/m/Y", strtotime($assignment->end_time)) }} <br>
+                                    <small>{{ \Carbon\Carbon::parse($assignment->assignment_time)->diffForHumans() }}</small>
+                                </div>
+                            @endforeach
+                            
+                        @endif
                         @foreach ($notifies as $notify)
                             @if ($notify->status == 1 && !empty($notify->supporter_name))
                                 <div class="alert alert-primary">
-                                    Cuộc họp "{{ $notify->meet_name }}" của bạn đã bộ phận quản lý phân công cán bộ <a class="text-danger" href="{{ route('supporter.info', ['id' => $notify->supporter_id]) }}">{{ $notify->supporter_name }}</a> hỗ trợ.<br>
+                                    Cuộc họp <strong>"{{ $notify->meet_name }}"</strong> của bạn đã được bộ phận quản lý phân công cán bộ <a class="text-danger" href="{{ route('supporter.info', ['id' => $notify->supporter_id]) }}"><strong>{{ $notify->supporter_name }}</strong></a> hỗ trợ.<br>
                                     <small>{{ \Carbon\Carbon::parse($notify->assignment_time)->diffForHumans() }}</small>
                                 </div>
                             @endif
                             @if ($notify->status == 1)
                                 <div class="alert alert-success">
-                                    Yêu cầu đăng ký "{{ $notify->meet_name }}" của bạn đã được chấp thuận.<br>
+                                    Yêu cầu đăng ký <strong>"{{ $notify->meet_name }}"</strong> của bạn đã được chấp thuận.<br>
                                     <small>{{ \Carbon\Carbon::parse($notify->approval_time)->diffForHumans() }}</small>
                                 </div>
                             @else
                                 <div class="alert alert-danger">
-                                    Yêu cầu đăng ký "{{ $notify->meet_name }}" của bạn đã bị từ chối.<br>
+                                    Yêu cầu đăng ký <strong>"{{ $notify->meet_name }}"</strong> của bạn đã bị từ chối.<br>
                                     Phản hồi từ lãnh đạo: {{ $notify->feedback }} <br>
                                     <small>{{ \Carbon\Carbon::parse($notify->approval_time)->diffForHumans() }}</small>
                                 </div>

@@ -38,7 +38,7 @@
                                         @for ($i = 0; $i<= 6; $i++)
                                             <td>
 
-                                                @foreach ($schedules[$room->id][$i] as $value)
+                                                @foreach ($schedules_1[$room->id][$i] as $value)
                                                     <strong>{{ date("H:i", strtotime($value->test_time)) }} - {{ date("H:i", strtotime($value->end_time)) }}</strong>
                                                     <br>{{ $value->meet_name }}<br>
                                                 @endforeach
@@ -49,6 +49,33 @@
                                     </tr>
                                 @endforeach
                                 
+                                <tr align="center">
+                                    <td>Phòng họp đơn vị</td>
+
+                                    @for ($i=0;$i<=6;$i++)
+                                        <td>
+                                            @foreach ($schedules_2[$i] as $value)
+                                                <strong>{{ date("H:i", strtotime($value->test_time)) }} - {{ date("H:i", strtotime($value->end_time)) }}</strong>
+                                                <br>{{ $value->meet_name }}<br>
+                                            @endforeach
+                                        </td>     
+                                    @endfor
+                                    
+                                </tr>
+
+                                <tr align="center">
+                                    <td>Jitsi Meet</td>
+
+                                    @for ($i=0;$i<=6;$i++)
+                                        <td>
+                                            @foreach ($schedules_3[$i] as $value)
+                                                <strong>{{ date("H:i", strtotime($value->test_time)) }} - {{ date("H:i", strtotime($value->end_time)) }}</strong>
+                                                <br>{{ $value->meet_name }}<br>
+                                            @endforeach
+                                        </td>     
+                                    @endfor
+                                    
+                                </tr>
                             </tbody>
                         </table>
                     </div>

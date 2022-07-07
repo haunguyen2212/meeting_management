@@ -17,8 +17,7 @@ class CreateMeetingManagementsTable extends Migration
             $table->id();
             $table->date('date');
             $table->bigInteger('type_sp_id')->unsigned();
-            $table->integer('max_qty');
-            $table->integer('remaining_qty');
+            $table->integer('qty');
             $table->timestamps();
             $table->foreign('type_sp_id')->references('id')->on('types_support')->onUpdate('cascade')->onDelete('cascade');
         });

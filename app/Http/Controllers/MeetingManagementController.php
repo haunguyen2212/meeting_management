@@ -21,7 +21,8 @@ class MeetingManagementController extends Controller
                 ->leftJoin('supporters', 'supporter_id', '=', 'supporters.id')
                 ->leftJoin('users', 'user_id', '=', 'users.id')
                 ->leftJoin('members', 'account_id', '=', 'users.id')
-                ->select('room_registrations.id', 'meet_name', 'test_time', 'end_time', 'status', DB::raw('members.name as supporter_name, rooms.name as room_name, departments.name as department_name, types_support.name as type_name'));
+                ->orderBy('updated_at', 'desc')
+                ->select('room_registrations.id', 'meet_name', 'test_time', 'end_time', 'status', 'room_registrations.updated_at', DB::raw('members.name as supporter_name, rooms.name as room_name, departments.name as department_name, types_support.name as type_name'));
         
         switch($filter){
             case 'all':

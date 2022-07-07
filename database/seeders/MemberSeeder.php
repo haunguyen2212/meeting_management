@@ -88,7 +88,7 @@ class MemberSeeder extends Seeder
             [
                 'id' => 6,
                 'name' => 'Phạm Hoàng Khiêm',
-                'department_id' => 7,
+                'department_id' => 2,
                 'position_id' => 3,
                 'account_id' => 6,
                 'date_of_birth' => '2000-04-21',

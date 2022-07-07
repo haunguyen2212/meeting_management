@@ -45,7 +45,15 @@ class HomeController extends Controller
             ->orderBy('approval_time', 'desc')
             ->take(15)
             ->get();
-        return view('shared.home', compact('user', 'notifies')); 
+        $assignments = RoomRegistration::join('supporters', 'supporter_id', '=', 'supporters.id')
+            ->join('users', 'user_id', '=', 'users.id')
+            ->join('members', 'account_id', '=', 'users.id')
+            ->whereNotNull('supporter_id')
+            ->select('supporter_id','meet_name', 'test_time', 'end_time' ,'assignment_time', DB::raw('members.name as supporter_name'))
+            ->orderBy('assignment_time', 'desc')
+            ->take(15)
+            ->get();
+        return view('shared.home', compact('user', 'notifies', 'assignments')); 
     }
 
     public function changePassword(Request $request){

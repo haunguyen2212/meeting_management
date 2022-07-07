@@ -39,7 +39,7 @@ class User extends Authenticatable
     }
 
     public function supporter(){
-        return $this->hasMany(Supporter::class, 'user_id', 'id');
+        return $this->hasOne(Supporter::class, 'user_id', 'id');
     }
 
     public function roomRegistration(){

@@ -44,7 +44,7 @@ function showData(obj){
     str += '<div><strong>Phân loại: </strong>'+obj.type.name+'</div>';
     str += '<div><strong>Tên đơn vị: </strong>'+obj.department.name+'</div>';
     str += '<div><strong>Người đăng ký: </strong>'+obj.register.name+'</div>';
-    str += '<div><strong>Phòng họp: </strong>'+((obj.room) ? obj.room.name : 'Justi Meet')+'</div>';
+    str += '<div><strong>Phòng họp: </strong>'+((obj.room) ? obj.room.name : '')+'</div>';
     str += '<div><strong>Cán bộ hỗ trợ: </strong>'+((obj.supporter) ? obj.supporter.name : ' ')+'</div>';
     str += '<div><strong>Thời gian thử nghiệm: </strong>'+formatDateTime(obj.info.test_time)+'</div>'
     str += '<div><strong>Thời gian bắt đầu: </strong>'+formatDateTime(obj.info.start_time)+'</div>';

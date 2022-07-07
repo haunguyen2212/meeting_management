@@ -23,18 +23,17 @@ class AssignmentController extends Controller
             ->leftJoin('users', 'user_id', '=' ,'users.id')
             ->leftJoin('members', 'account_id', '=', 'users.id')
             ->select('room_registrations.id', 'meet_name', 'test_time', 'start_time', 'end_time', DB::raw('departments.name as department_name, members.name as supporter_name'))
-            ->orderBy('test_time', 'asc')
             ->where('status', 1);
 
         switch($filter){
             case 'new':
-                $meetings = $meetings->where('test_time', '>=', $now)->whereNull('supporter_id')->paginate(10);
+                $meetings = $meetings->where('test_time', '>=', $now)->whereNull('supporter_id')->orderBy('test_time', 'asc')->paginate(10);
                 break;
             case 'done':
-                $meetings = $meetings->whereNotNull('supporter_id')->paginate(10);
+                $meetings = $meetings->whereNotNull('supporter_id')->orderBy('test_time', 'desc')->paginate(10);
                 break;
             default:
-                $meetings = $meetings->paginate(10);
+                $meetings = $meetings->orderBy('test_time', 'desc')->paginate(10);
         }
 
         $meetings->appends(['filter' => $filter]);

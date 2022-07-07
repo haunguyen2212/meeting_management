@@ -1287,6 +1287,10 @@ td .status{
         margin-right: 0;
     }
 
+    main{
+      margin-top: 75px;
+  }
+
 }
 
 @media only screen and (max-width: 960px){
