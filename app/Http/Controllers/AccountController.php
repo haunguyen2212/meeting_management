@@ -22,7 +22,7 @@ class AccountController extends Controller
     {
         $accounts = Member::join('users', 'account_id', 'users.id')
                 ->select('members.id', 'username', 'members.name', 'account_id', 'date_of_birth', 'address', 'phone', 'email')
-                ->paginate(8);
+                ->paginate(10);
         return view('admin.account', compact('accounts'));
     }
 
@@ -48,7 +48,7 @@ class AccountController extends Controller
             'name_add' => 'required|max:50',
             'gender_add' => 'required|in:0,1',
             'date_add' => 'required|date_format:d-m-Y',
-            'phone_add' => 'required|max:20',
+            'phone_add' => 'required|max:10',
             'address_add' => 'required|max:200',
             'department_add' => 'required|exists:departments,id',
             'position_add' => 'required|exists:positions,id',
@@ -173,7 +173,7 @@ class AccountController extends Controller
             'name_edit' => 'required|max:50',
             'gender_edit' => 'required|in:0,1',
             'date_edit' => 'required|date_format:d-m-Y',
-            'phone_edit' => 'required|max:20',
+            'phone_edit' => 'required|max:10',
             'address_edit' => 'required|max:200',
             'department_edit' => 'required|exists:departments,id',
             'position_edit' => 'required|exists:positions,id',

@@ -111,7 +111,7 @@
 						@method('PATCH')
 						<div class="file-box-100">
 							<span class="input-label">Hình ảnh:</span>
-							<input type="file" name="img" id="img" onchange="chooseFile(event, this,'edit-upload')"><br>
+							<input type="file" accept="image/*" name="img" id="img" onchange="chooseFile(event, this,'edit-upload')"><br>		
 							<img id="edit-upload" alt="img" width="150px"><br>
 							<span class="error-text error_img text-danger"></span>
 						</div>

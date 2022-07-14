@@ -27,6 +27,25 @@
                                     @enderror
 
                                 </div>
+
+                                @if (Auth::user()->role_id == 1)
+                                    <div class="select-box-100">
+                                        <span class="input-label">Đơn vị đăng ký:</span>
+                                        <select id="department_name" name="department_name">
+                                            <option value="">Chọn tên đơn vị</option>
+
+                                            @foreach ($departments as $department)
+                                                <option value="{{ $department->id }}" {{(old("department_name") == $department->id) ? "selected": ""}}>{{ $department->name }}</option>
+                                            @endforeach
+
+                                        </select>
+
+                                        @error('department_name')
+                                            <div class="text-danger font-13 ms-2">{{ $message }}</div>
+                                        @enderror
+
+                                    </div>
+                                @endif
                                 <div class="select-box-50">
                                     <span class="input-label">Hình thức đăng ký:</span>
                                     <select id="type_sp" name="type_sp">
@@ -43,7 +62,7 @@
                                     @enderror
 
                                 </div>
-                                <div class="select-box-50" style="display: none">
+                                <div class="select-box-50" disabled>
                                     <span class="input-label">Phòng họp:</span>
                                     <select id="room_name" name="room_name" disabled>
                                         <option value="">Chọn phòng họp:</option>
@@ -175,17 +194,14 @@
         $("#type_sp").change(function(){
             if($("#type_sp").children("option:selected").val() == 1){
                 $('#room_name').prop('disabled', false);
-                $('#room_name').parent().show();
             }
             else{
                 $('#room_name').prop('disabled', 'disabled'); 
-                $('#room_name').parent().hide();
             }
         });
         
         @if (old('type_sp') == 1)
             $('#room_name').prop('disabled', false);
-            $('#room_name').parent().show();
         @endif
 
     </script>

@@ -44,7 +44,7 @@
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $meeting->meet_name }}</td>
-                                        <td>{{ substr($meeting->test_time, 11, 5) }} - {{ date("H:i d/m/Y", strtotime($meeting->end_time)) }}</td>
+                                        <td>{{ date("H:i d/m/Y", strtotime($meeting->test_time)) }} - {{ date("H:i d/m/Y", strtotime($meeting->end_time)) }}</td>
                                         <td>{{ $meeting->department_name }}</td>
                                         <td>{{ $meeting->room_name }}</td>
                                         <td>{{ $meeting->type_name }}</td>

@@ -36,9 +36,11 @@
                         <li>
                             <a id="room" href="{{ route('room.index') }}"><span class="las la-warehouse"></span><span>Phòng họp</span></a>
                         </li>
-                        
                         <li>
                             <a id="department" href="{{ route('department.index') }}"><span class="las la-city"></span><span>Đơn vị</span></a>
+                        </li>
+                        <li>
+                            <a id="position" href="{{ route('position.index') }}"><span class="las la-tags"></span><span>Chức vụ</span></a>
                         </li>
                         <li>
                             <a id="meeting-list" href="{{ route('meeting.index') }}"><span class="las la-calendar-check"></span><span>Cuộc họp</span></a>
@@ -80,11 +82,12 @@
                         <a id="schedule" href="{{ route('schedule.index') }}"><span class="las la-calendar"></span><span>Lịch họp</span></a>
                     </li>
                     <li>
-                        <a id="document" href="{{ route('document.list') }}"><span class="las la-file-alt"></span><span>Biểu mẫu</span></a>
+                        <a id="profile" href="{{ route('profile') }}"><span class="las la-cog"></span><span>Cá nhân</span></a>
                     </li>
                     <li>
-                        <a id="statistical" href="{{ route('statistical.index') }}"><span class="las la-signal"></span><span>Thống kê</span></a>
+                        <a id="document" href="{{ route('document.list') }}"><span class="las la-file-alt"></span><span>Biểu mẫu</span></a>
                     </li>
+                    
                     <li>
                         <a href="{{ route('logout') }}"><span class="las la-sign-out-alt"></span><span>Đăng xuất</span></a>
                     </li>

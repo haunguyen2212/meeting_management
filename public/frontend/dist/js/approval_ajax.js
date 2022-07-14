@@ -28,9 +28,14 @@ $('.btn-accept').click(function(e){
 $('.btn-deny').click(function(e){
     e.preventDefault();
     var url = $(this).attr('data-url');
+    $('#send-feedback').attr('data-url', url);
+});
+
+$('#send-feedback').submit(function(e){
+    e.preventDefault();
+    var url = $(this).attr('data-url');
     var _method = 'patch';
-    var feedback = prompt('Nhập nội dung phản hồi');
-    if(feedback != ''){
+    var feedback = $('#feedback').val();
         $.ajax({
             type: 'post',
             url: url,
@@ -40,7 +45,14 @@ $('.btn-deny').click(function(e){
                 feedback:feedback,
             },
             success: function(response){
-                window.location.reload();
+                if(typeof response.error != 'undefined'){
+                    $.each(response.error, function(prefix, val){
+                        $('span.error_'+prefix).html(val[0]);
+                    });
+                }
+                else{
+                    window.location.reload();
+                }
             },
             error: function(error){
                 toastr["error"]("Có lỗi xảy ra, thử lại sau", "Thất bại");
@@ -48,5 +60,4 @@ $('.btn-deny').click(function(e){
             }
             
         });
-    }
 });

@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             [
                 'id' => 1,
                 'username' => 'admincp',
-                'password' => Hash::make('12345'),
+                'password' => Hash::make('12345678'),
                 'role_id' => 1,
                 'created_at' => $dateTime,
                 'updated_at' => $dateTime,
@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
             [
                 'id' => 2,
                 'username' => 'CB00001',
-                'password' => Hash::make('12345'),
+                'password' => Hash::make('12345678'),
                 'role_id' => 4,
                 'created_at' => $dateTime,
                 'updated_at' => $dateTime,
@@ -35,7 +35,7 @@ class UserSeeder extends Seeder
             [
                 'id' => 3,
                 'username' => 'CB00002',
-                'password' => Hash::make('12345'),
+                'password' => Hash::make('12345678'),
                 'role_id' => 4,
                 'created_at' => $dateTime,
                 'updated_at' => $dateTime,
@@ -43,7 +43,7 @@ class UserSeeder extends Seeder
             [
                 'id' => 4,
                 'username' => 'CB00003',
-                'password' => Hash::make('12345'),
+                'password' => Hash::make('12345678'),
                 'role_id' => 2,
                 'created_at' => $dateTime,
                 'updated_at' => $dateTime,
@@ -51,7 +51,7 @@ class UserSeeder extends Seeder
             [
                 'id' => 5,
                 'username' => 'CB00004',
-                'password' => Hash::make('12345'),
+                'password' => Hash::make('12345678'),
                 'role_id' => 3,
                 'created_at' => $dateTime,
                 'updated_at' => $dateTime,
@@ -59,7 +59,7 @@ class UserSeeder extends Seeder
             [
                 'id' => 6,
                 'username' => 'CB00005',
-                'password' => Hash::make('12345'),
+                'password' => Hash::make('12345678'),
                 'role_id' => 4,
                 'created_at' => $dateTime,
                 'updated_at' => $dateTime,
@@ -67,7 +67,7 @@ class UserSeeder extends Seeder
             [
                 'id' => 7,
                 'username' => 'CB00006',
-                'password' => Hash::make('12345'),
+                'password' => Hash::make('12345678'),
                 'role_id' => 4,
                 'created_at' => $dateTime,
                 'updated_at' => $dateTime,
@@ -75,7 +75,7 @@ class UserSeeder extends Seeder
             [
                 'id' => 8,
                 'username' => 'CB00007',
-                'password' => Hash::make('12345'),
+                'password' => Hash::make('12345678'),
                 'role_id' => 4,
                 'created_at' => $dateTime,
                 'updated_at' => $dateTime,
@@ -83,7 +83,7 @@ class UserSeeder extends Seeder
             [
                 'id' => 9,
                 'username' => 'CB00008',
-                'password' => Hash::make('12345'),
+                'password' => Hash::make('12345678'),
                 'role_id' => 4,
                 'created_at' => $dateTime,
                 'updated_at' => $dateTime,
@@ -91,7 +91,7 @@ class UserSeeder extends Seeder
             [
                 'id' => 10,
                 'username' => 'CB00009',
-                'password' => Hash::make('12345'),
+                'password' => Hash::make('12345678'),
                 'role_id' => 4,
                 'created_at' => $dateTime,
                 'updated_at' => $dateTime,

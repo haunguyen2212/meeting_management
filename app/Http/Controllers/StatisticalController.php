@@ -14,17 +14,42 @@ use Illuminate\Support\Facades\DB;
 class StatisticalController extends Controller
 {
     public function index(Request $request){ 
-        $filter = $request->filter ?? 'all';
-        $months = RoomRegistration::select(DB::raw('DISTINCT LEFT(test_time, 7) as month'))->get();
+        $notifies = RoomRegistration::leftJoin('supporters', 'supporter_id', '=', 'supporters.id')
+            ->leftJoin('users', 'user_id', '=', 'users.id')
+            ->leftJoin('members', 'account_id', '=', 'users.id')
+            ->select('meet_name', 'type_sp_id', 'status', 'feedback', 'approval_time', 'assignment_time', DB::raw('members.name as supporter_name, supporters.id as supporter_id'))
+            ->where('register_id', Auth::id())
+            ->whereIn('status', [-1, 1])
+            ->orderBy('approval_time', 'desc')
+            ->take(15)
+            ->get();
+
+        if(Auth::user()->role_id != 4){
+            $assignments = RoomRegistration::join('supporters', 'supporter_id', '=', 'supporters.id')
+            ->join('users', 'user_id', '=', 'users.id')
+            ->join('members', 'account_id', '=', 'users.id')
+            ->whereNotNull('supporter_id')
+            ->select('supporter_id','meet_name', 'test_time', 'end_time' ,'assignment_time', DB::raw('members.name as supporter_name'))
+            ->orderBy('assignment_time', 'desc')
+            ->take(15)
+            ->get();
+        }
+        else{
+            $assignments = RoomRegistration::join('supporters', 'supporter_id', '=', 'supporters.id')
+            ->join('users', 'user_id', '=', 'users.id')
+            ->join('members', 'account_id', '=', 'users.id')
+            ->whereNotNull('supporter_id')
+            ->where('register_id', Auth::id())
+            ->select('supporter_id','meet_name', 'test_time', 'end_time' ,'assignment_time', DB::raw('members.name as supporter_name'))
+            ->orderBy('assignment_time', 'desc')
+            ->take(15)
+            ->get(); 
+        }
+        
         $types = TypeSupport::select('id', 'name')->get();
 
         if(Auth::user()->role_id == 4){
             $department_id = Member::where('account_id', Auth::id())->first()->department_id;
-            $dataChart = RoomRegistration::where('status', 1)
-                ->where('department_id', $department_id)
-                ->groupBy(DB::raw('MONTH(test_time)'))
-                ->selectRaw('MONTH(test_time) as month, COUNT(*) as total')
-                ->get();
             $num_registration = RoomRegistration::where('department_id', $department_id);
             $num_accept = RoomRegistration::where('department_id', $department_id)
                 ->where('status', 1);
@@ -41,10 +66,6 @@ class StatisticalController extends Controller
             }
         }
         else{
-            $dataChart = RoomRegistration::where('status', 1)
-                ->groupBy(DB::raw('MONTH(test_time)'))
-                ->selectRaw('MONTH(test_time) as month, COUNT(*) as total')
-                ->get();
             $num_registration = RoomRegistration::select('*');
             $num_accept = RoomRegistration::where('status', 1);
             $num_deny = RoomRegistration::where('status', '-1');
@@ -56,54 +77,56 @@ class StatisticalController extends Controller
             }
         }
 
-        $chartArr = array(0, 0, 0, 0, 0, 0, 0, 0 , 0, 0, 0, 0);
-        foreach($dataChart as $value){
-            $chartArr[--$value->month] = $value->total;
-        }
+        if(isset($request->start) && isset($request->end)){
+            $rules = [
+                'start' => 'required|date_format:d-m-Y',
+                'end' => 'required|date_format:d-m-Y|after_or_equal:start',
+            ];
 
-        switch($filter){
-            case 'all':
-                $num_registration = $num_registration->count();
-                $num_accept = $num_accept->count();
-                $num_deny = $num_deny->count();
-                $num_pending = $num_pending->count();
-                foreach($types as $type){
-                    $num_type_meeting[$type->id] = $num_type_meeting[$type->id]->count();
-                }
-                break;
-            case 'week':
-                $now = Carbon::now();
-                $weekStartDate = $now->startOfWeek()->format('Y-m-d');
-                $weekEndDate = $now->endOfWeek()->format('Y-m-d');
-                $num_registration = $num_registration->where('test_time', '>=', $weekStartDate)
-                    ->where('test_time', '<=', $weekEndDate)
+            $messages = [
+                'start.required' => 'Chưa chọn ngày',
+                'start.date_format' => 'Định dạng chưa đúng',
+                'end.required' => 'Chưa chọn ngày',
+                'end.date_format' => 'Định dạng chưa đúng',
+                'end.after_or_equal' => 'Ngày chọn không hợp lệ',
+            ];
+
+            $request->validate($rules, $messages);
+
+            $start = date('Y-m-d', strtotime($request->start));
+            $end = date('Y-m-d', strtotime($request->end));
+            
+            $num_registration = $num_registration
+                ->whereDate('end_time', '>=', $start)
+                ->whereDate('end_time', '<=', $end)
+                ->count();
+            $num_accept = $num_accept
+                ->whereDate('end_time', '>=', $start)
+                ->whereDate('end_time', '<=', $end)
+                ->count();
+            $num_deny = $num_deny
+                ->whereDate('end_time', '>=', $start)
+                ->whereDate('end_time', '<=', $end)
+                ->count();
+            $num_pending = $num_pending->count();
+            foreach($types as $type){
+                $num_type_meeting[$type->id] = $num_type_meeting[$type->id]
+                    ->whereDate('end_time', '>=', $start)
+                    ->whereDate('end_time', '<=', $end)
                     ->count();
-                $num_accept = $num_accept->where('test_time', '>=', $weekStartDate)
-                    ->where('test_time', '<=', $weekEndDate)
-                    ->count();
-                $num_deny = $num_deny->where('test_time', '>=', $weekStartDate)
-                    ->where('test_time', '<=', $weekEndDate)
-                    ->count();
-                $num_pending = $num_pending->where('test_time', '>=', $weekStartDate)
-                    ->where('test_time', '<=', $weekEndDate)
-                    ->count();
-                foreach($types as $type){
-                    $num_type_meeting[$type->id] = $num_type_meeting[$type->id]->where('test_time', '>=', $weekStartDate)
-                    ->where('test_time', '<=', $weekEndDate)
-                    ->count();
-                }
-                break;
-            default:
-                $num_registration = $num_registration->where(DB::raw('LEFT(test_time, 7)'), $filter)->count();
-                $num_accept = $num_accept->where(DB::raw('LEFT(test_time, 7)'), $filter)->count();
-                $num_deny = $num_deny->where(DB::raw('LEFT(test_time, 7)'), $filter)->count();
-                $num_pending = $num_pending->where(DB::raw('LEFT(test_time, 7)'), $filter)->count();
-                foreach($types as $type){
-                    $num_type_meeting[$type->id] = $num_type_meeting[$type->id]->where(DB::raw('LEFT(test_time, 7)'), $filter)->count();
-                }
+            }
+        }
+        else{
+            $num_registration = $num_registration->count();
+            $num_accept = $num_accept->count();
+            $num_deny = $num_deny->count();
+            $num_pending = $num_pending->count();
+            foreach($types as $type){
+                $num_type_meeting[$type->id] = $num_type_meeting[$type->id]->count();
+            }
         }
         
-        return view('shared.statistical', compact('months', 'num_registration', 'num_registration',
-             'num_accept', 'num_deny', 'num_pending', 'types' ,'num_type_meeting', 'chartArr'));
+        return view('shared.statistical', compact('notifies', 'assignments','num_registration', 'num_registration',
+             'num_accept', 'num_deny', 'num_pending', 'types' ,'num_type_meeting'));
     }
 }

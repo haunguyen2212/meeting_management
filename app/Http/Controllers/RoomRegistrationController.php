@@ -21,11 +21,12 @@ class RoomRegistrationController extends Controller
     {
         $types = TypeSupport::select('id', 'name')->get();
         $rooms = Room::select('id', 'name')->get();
+        $departments = Department::select('id', 'name')->get();
         $history_registrations = RoomRegistration::where('register_id', Auth::id())
             ->select('id', 'meet_name', 'status')
             ->orderBy('id', 'desc')
             ->paginate(10);
-        return view('shared.registration', compact('types', 'rooms', 'history_registrations'));
+        return view('shared.registration', compact('types', 'rooms', 'departments', 'history_registrations'));
     }
 
     public function create()
@@ -36,13 +37,13 @@ class RoomRegistrationController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'meet_name' => 'required|max:200',
+            'meet_name' => 'required|max:500',
             'type_sp' => 'required|exists:types_support,id',
             'room_name' => 'required_if:type_sp,1',
             'test_time' => 'required|date_format:d-m-Y H:i|after:now',
             'start_time' => 'required|date_format:d-m-Y H:i|after:test_time',
             'end_time' => 'required|date_format:d-m-Y H:i|after:start_time',
-            'document' => 'required|max:2048|mimes:pdf',
+            'document' => 'required|max:2048|mimes:pdf,doc,docx',
         ];
 
         $messages = [
@@ -62,7 +63,7 @@ class RoomRegistrationController extends Controller
             'end_time.after' => 'Thời gian kết thúc phải sau thời gian bắt đầu',
             'document.required' => 'Chưa upload văn bản đăng ký họp',
             'document.max' => 'Kích thước file vượt quá quy định',
-            'document.mimes' => 'Văn bản phải là file pdf',
+            'document.mimes' => 'Văn bản phải là file pdf, doc hoặc docx',
         ];
 
         $request->validate($rules, $messages);
@@ -93,7 +94,23 @@ class RoomRegistrationController extends Controller
             $document->move(public_path('frontend/dist/upload/'), $newName);
         }
 
-        $department_id = Member::where('account_id', Auth::id())->first()->department_id;
+        if(Auth::user()->role_id == 1){
+            $request->validate([
+                'department_name' => 'required|exists:departments,id',
+            ],[
+                'department_name.required' => 'Chưa chọn đơn vị đăng ký',
+                'department_name.exists' => 'Đơn vị không tồn tại',
+            ]);
+            $department_id = $request->department_name;
+        }
+        else{
+            $department_id = Member::where('account_id', Auth::id())->first()->department_id;
+        }
+
+        if($request->type_sp != 1){
+            $request->room_name = NULL;
+        }
+        
         $store = RoomRegistration::create([
             'meet_name' => $request->meet_name,
             'register_id' => Auth::id(),

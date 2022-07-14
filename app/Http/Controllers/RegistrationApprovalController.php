@@ -7,6 +7,7 @@ use Brian2694\Toastr\Facades\Toastr;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class RegistrationApprovalController extends Controller
 {
@@ -73,6 +74,21 @@ class RegistrationApprovalController extends Controller
     }
 
     public function deny(Request $request, $id){
+        $rules = [
+            'feedback' => 'required|max:500',
+        ];
+
+        $messages = [
+            'feedback.required' => 'Chưa nhập phản hồi',
+            'feedback.max' => 'Phản hồi quá dài',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if($validator->fails()){
+            return response()->json(['error' => $validator->errors()->toArray(), 'status' => 0]);
+        }
+
         $now = Carbon::now()->format('Y-m-d H:i:s');
         $meeting = RoomRegistration::find($id);
         $update = $meeting->update([

@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MeetingManagementController;
 use App\Http\Controllers\MeetingScheduleController;
+use App\Http\Controllers\PositionController;
 use App\Http\Controllers\RegistrationApprovalController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomRegistrationController;
@@ -14,14 +15,14 @@ use App\Http\Controllers\StatisticalController;
 use App\Http\Controllers\SupporterController;
 use Illuminate\Support\Facades\Route;
 
-
-Route::get('/', [HomeController::class, 'index'])->middleware('auth')->name('home');
+Route::get('/', [StatisticalController::class, 'index'])->middleware('auth')->name('home');
 
 Route::get('login', [LoginController::class, 'index'])->name('login');
 Route::post('login', [LoginController::class, 'check'])->name('login.check');
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::group(['prefix' => 'home', 'middleware' => 'auth'], function(){
+    Route::get('profile', [HomeController::class, 'index'])->middleware('auth')->name('profile');
     Route::patch('password/change', [HomeController::class, 'changePassword'])->name('password.change');
     Route::get('profile/edit/{id}', [HomeController::class, 'editProfile'])->name('profile.edit');
     Route::patch('profile/edit/{id}', [HomeController::class, 'updateProfile'])->name('profile.update');
@@ -32,7 +33,6 @@ Route::group(['prefix' => 'home', 'middleware' => 'auth'], function(){
     Route::get('schedule/printPDF', [MeetingScheduleController::class, 'printPDF'])->name('schedule.print');
     Route::get('document', [HomeController::class, 'listDocument'])->name('document.list');
     Route::get('supporter/{id}', [HomeController::class, 'getInfoSupporter'])->name('supporter.info');
-    Route::get('statistical', [StatisticalController::class, 'index'])->name('statistical.index');
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'isAdmin']], function(){
@@ -40,6 +40,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'isAdmin']], functio
     Route::patch('account/password/change/{id}', [AccountController::class, 'changePassword'])->name('account.password');
     Route::resource('room', RoomController::class)->except(['create', 'show']);
     Route::resource('department', DepartmentController::class)->except(['create']);
+    Route::resource('position', PositionController::class)->except(['create', 'show']);
     Route::group(['prefix' => 'meeting'], function(){
         Route::get('/', [MeetingManagementController::class, 'index'])->name('meeting.index');
         Route::get('show/{id}', [MeetingManagementController::class, 'show'])->name('meeting.show');

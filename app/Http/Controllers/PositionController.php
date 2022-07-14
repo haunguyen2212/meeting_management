@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Room;
+use App\Models\Position;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-use function GuzzleHttp\Promise\all;
-
-class RoomController extends Controller
+class PositionController extends Controller
 {
 
     public function index()
     {
-        $rooms = Room::select('id', 'name')->paginate(10);
-        return view('admin.room', compact('rooms'));
+        $positions = Position::select('id', 'name')->paginate(10);
+        return view('admin.position', compact('positions'));
     }
 
     public function create()
@@ -30,8 +28,8 @@ class RoomController extends Controller
         ];
 
         $messages = [
-            'name_add.required' => 'Tên phòng không được bỏ trống',
-            'name_add.max' => 'Tên phòng quá dài',
+            'name_add.required' => 'Tên không được bỏ trống',
+            'name_add.max' => 'Tên chức vụ quá dài',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -41,19 +39,18 @@ class RoomController extends Controller
         }
 
         $name = $request->name_add;
-        $create = Room::create([
+        $create = Position::create([
             'name' => $name,
         ]);
 
         if($create){
-            Toastr::success('Thêm phòng thành công', 'Thành công');
+            Toastr::success('Thêm chức vụ thành công', 'Thành công');
             return response()->json(['status' => 1]);
         }
         else{
             Toastr::error('Có lỗi xảy ra, thử lại sau');
             return response()->json(['status' => 0]);
         }
-
     }
 
     public function show($id)
@@ -63,7 +60,7 @@ class RoomController extends Controller
 
     public function edit($id)
     {
-        $data = Room::select('name')->find($id);
+        $data = Position::select('name')->find($id);
         if(!empty($data)){
             return response()->json(['data' => $data, 'status' => 1]);
         }
@@ -80,8 +77,8 @@ class RoomController extends Controller
         ];
 
         $messages = [
-            'name_edit.required' => 'Tên phòng không được bỏ trống',
-            'name_edit.max' => 'Tên phòng quá dài',
+            'name_edit.required' => 'Tên chức vụ không được bỏ trống',
+            'name_edit.max' => 'Tên chức vụ quá dài',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -91,7 +88,7 @@ class RoomController extends Controller
         }
 
         $name = $request->name_edit;
-        $update = Room::find($id)->update([
+        $update = Position::find($id)->update([
             'name' => $name,
         ]);
 
@@ -107,7 +104,7 @@ class RoomController extends Controller
 
     public function destroy($id)
     {
-        $delete = Room::find($id)->delete();
+        $delete = Position::find($id)->delete();
         if($delete){
             Toastr::success('Xóa thành công', 'Thành công');
             return response()->json(['status' => 1]);

@@ -41,7 +41,7 @@
                                         <td>{{ $meeting->department_name }}</td>
                                         <td>
                                             <strong>Thử nghiệm: </strong> <br> {{ date("H:i d/m/Y", strtotime($meeting->test_time)) }} <br>
-                                            <strong>Chính thức: </strong> <br> {{ date("H:i", strtotime($meeting->start_time)) }} - 
+                                            <strong>Chính thức: </strong> <br> {{ date("H:i d/m/Y", strtotime($meeting->start_time)) }} - 
                                             {{ date("H:i d/m/Y", strtotime($meeting->end_time)) }}
                                         </td>
                                         <td>{{ $meeting->supporter_name ?? 'Chưa phân công' }}</td>

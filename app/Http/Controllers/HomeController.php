@@ -36,24 +36,7 @@ class HomeController extends Controller
             ->where('members.id', $id)
             ->select('members.id','members.name', 'account_id', 'date_of_birth', 'sex', 'address' ,'avatar', 'phone', 'email' , 'username', DB::raw('departments.name as department_name, positions.name as position_name, roles.name as role_name'))
             ->first();
-        $notifies = RoomRegistration::leftJoin('supporters', 'supporter_id', '=', 'supporters.id')
-            ->leftJoin('users', 'user_id', '=', 'users.id')
-            ->leftJoin('members', 'account_id', '=', 'users.id')
-            ->select('meet_name', 'type_sp_id', 'status', 'feedback', 'approval_time', 'assignment_time', DB::raw('members.name as supporter_name, supporters.id as supporter_id'))
-            ->where('register_id', Auth::id())
-            ->whereIn('status', [-1, 1])
-            ->orderBy('approval_time', 'desc')
-            ->take(15)
-            ->get();
-        $assignments = RoomRegistration::join('supporters', 'supporter_id', '=', 'supporters.id')
-            ->join('users', 'user_id', '=', 'users.id')
-            ->join('members', 'account_id', '=', 'users.id')
-            ->whereNotNull('supporter_id')
-            ->select('supporter_id','meet_name', 'test_time', 'end_time' ,'assignment_time', DB::raw('members.name as supporter_name'))
-            ->orderBy('assignment_time', 'desc')
-            ->take(15)
-            ->get();
-        return view('shared.home', compact('user', 'notifies', 'assignments')); 
+        return view('shared.home', compact('user')); 
     }
 
     public function changePassword(Request $request){
@@ -123,7 +106,7 @@ class HomeController extends Controller
             'name_edit' => 'required|max:50',
             'gender_edit' => 'required|in:0,1',
             'date_edit' => 'required|date_format:d-m-Y',
-            'phone_edit' => 'required|max:20',
+            'phone_edit' => 'required|max:10',
             'address_edit' => 'required|max:200',
             'email_edit' => [
                 'required',
